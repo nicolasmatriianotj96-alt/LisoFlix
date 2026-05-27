@@ -9,7 +9,7 @@ async function login() {
     try {
 
         const resposta = await fetch(
-            "http://localhost:3000/auth/login",
+            https://lisoflix-backend.onrender.com/auth/login,
             {
                 method: "POST",
                 headers: {
