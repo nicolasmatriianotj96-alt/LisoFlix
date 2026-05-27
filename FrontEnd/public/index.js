@@ -29,7 +29,7 @@ async function login() {
             localStorage.setItem("token", dados.token);
 
             mensagem.innerText = "Login realizado";
-            window.location.href = "../private/index3.html";
+            window.location.href = "../index3.html";
 
             document.getElementById("usuario").value = "";
 
