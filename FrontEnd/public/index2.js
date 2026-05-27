@@ -15,7 +15,7 @@ async function registrar(){
 try{
     
     const resposta = await fetch(
-        "http://localhost:3000/auth/register",
+        "https://lisoflix-backend.onrender.com/auth/register",
         {
 
             method:"POST",
