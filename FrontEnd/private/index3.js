@@ -14,7 +14,7 @@ async function carregarFilmes() {
 
         const resposta = await fetch(
 
-            "http://localhost:3000/auth/filmes"
+            "https://lisoflix-backend.onrender.com/auth/filmes"
 
         );
 
