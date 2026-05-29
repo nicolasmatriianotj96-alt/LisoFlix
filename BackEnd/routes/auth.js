@@ -49,17 +49,20 @@ router.post("/register", async (req, res) => {
 // LOGIN
 router.post("/login", async (req, res) => {
 
-    const { usuario, senha } = req.body;
+    const { email, senha } = req.body;
+    console.log(email);
+    console.log(senha);
 
     try {
 
         const result = await db.query(
 
-            "SELECT * FROM usuarios WHERE usuario = $1",
+            "SELECT * FROM usuarios WHERE email = $1",
 
-            [usuario]
+            [email]
 
         );
+        console.log(result.rows);
 
         if (result.rows.length === 0) {
 
@@ -95,7 +98,7 @@ router.post("/login", async (req, res) => {
             {
 
                 id: usuarioBanco.id,
-                usuario: usuarioBanco.usuario
+                email: usuarioBanco.email
 
             },
 
@@ -118,15 +121,21 @@ router.post("/login", async (req, res) => {
 
     } catch (erro) {
 
-        console.log(erro);
+    console.log(erro);
 
-        res.status(500).json({
+    if (erro.code === "23505") {
 
-            mensagem: "Erro no servidor"
-
+        return res.status(400).json({
+            mensagem: "Usuário ou email já existe"
         });
 
     }
+
+    res.status(500).json({
+        mensagem: "Erro no servidor"
+    });
+
+}
 
 });
 
