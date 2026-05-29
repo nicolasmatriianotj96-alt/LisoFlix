@@ -33,6 +33,8 @@ try{
         }
     );
 
+    const dados = await resposta.json();
+
     if(resposta.ok){        
         mensagem.innerText = "Cadastro Concluido!";
 
@@ -40,7 +42,9 @@ try{
         document.getElementById("email").value = "";
         document.getElementById("senha").value = "";
     } else {
-        mensagem.innerText = "Algo deu errado!";
+        const dados = await resposta.json();
+
+mensagem.innerText = dados.mensagem;
     }
 
 }catch(erro){

@@ -15,8 +15,8 @@
         <div class="login-container">
             <h1>LisoFlix</h1>
             <h3>Entrar</h3>
-            <input type="text" id="usuario" placeholder="Usuário">
-            <input type="password" id="senha" placeholder="Senha">
+            <input type="email" id="email" placeholder="Digite seu email">
+            <input type="password" id="senha" placeholder="Digite sua senha">
             <button type="button" onclick="login()">Login</button>   
             <a href="index2.html" class="registrar">
                 Registrar
@@ -29,30 +29,7 @@
    
     
     
-<script>
-async function login() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
 
-    const res = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
-    });
-
-    if (res.ok) {
-        const data = await res.json();
-
-        localStorage.setItem("token", data.token);
-
-        window.location.href = "/private/index3.html";
-    } else {
-        alert("Login inválido");
-    }
-}
-</script>
     <script src="index.js"></script>
 </body>
 </html>

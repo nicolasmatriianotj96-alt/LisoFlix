@@ -1,12 +1,14 @@
 async function login() {
 
-    const usuario = document.getElementById("usuario");
+    const email = document.getElementById("email");
 
     const senha = document.getElementById("senha");
 
     const mensagem = document.getElementById("mensagem");
 
     try {
+        console.log(email.value);
+console.log(senha.value);
 
         const resposta = await fetch(
             "https://lisoflix-backend.onrender.com/auth/login",
@@ -17,7 +19,7 @@ async function login() {
                 },
                 
                 body: JSON.stringify({
-                    usuario: usuario.value,
+                    email: email.value,
                     senha: senha.value
                 })
             }
@@ -29,9 +31,9 @@ async function login() {
             localStorage.setItem("token", dados.token);
 
             mensagem.innerText = "Login realizado";
-            window.location.href = "../index3.html";
+            window.location.href = "/index3.html";
 
-            document.getElementById("usuario").value = "";
+            document.getElementById("email").value = "";
 
             document.getElementById("senha").value = "";
 
@@ -42,11 +44,15 @@ async function login() {
         }
 
     } catch (erro) {
+
     console.log(erro);
+
     mensagem.innerText = "Erro no servidor";
+
+}
 }
    
 
-}
+
 
  
