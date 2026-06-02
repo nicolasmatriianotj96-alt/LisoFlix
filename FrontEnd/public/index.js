@@ -2,6 +2,22 @@ async function login() {
     const email = document.getElementById("email");
     const senha = document.getElementById("senha");
     const mensagem = document.getElementById("mensagem");
+    const btn = document.querySelector('button[onclick="login()"]'); // pega o botao
+
+    // Validacao do email
+    if (!email.value.includes('@') || !email.value.includes('.')) {
+        mensagem.innerText = 'Digite um email valido';
+        return;
+    }
+
+    if (senha.value.length < 6) {
+        mensagem.innerText = 'Senha precisa ter 8 ou mais caracteres';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = 'Carregando...';
+    mensagem.innerText = '';
 
     try {
         // 1. REMOVIDO console.log(email.value) e console.log(senha.value)
@@ -39,4 +55,7 @@ async function login() {
         console.log(erro);
         mensagem.innerText = "Erro no servidor";
     }
+
+    btn.disabled = false;
+    btn.innerText = 'Login';
 }
