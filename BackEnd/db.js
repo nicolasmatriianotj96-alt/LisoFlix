@@ -4,7 +4,7 @@ console.log("DATABASE_URL lida pelo db.js:", process.env.DATABASE_URL)
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false}
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 })
 
 
