@@ -3,8 +3,11 @@ const { Pool } = require("pg");
 console.log("DATABASE_URL lida pelo db.js:", process.env.DATABASE_URL)
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false}
 })
+
+
 
 module.exports = pool
 
