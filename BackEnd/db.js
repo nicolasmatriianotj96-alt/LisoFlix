@@ -3,13 +3,10 @@ require('dotenv').config();
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
+    ssl: { rejectUnauthorized: false }
 });
 
-pool.on('connect', () => console.log('DB conectado com sucesso'));
-pool.on('error', (err) => console.log('DB erro:', err.message));
+pool.query('SELECT 1').then(() => console.log('DB conectado')).catch(e => console.log('Erro no banco:', e.message));
 
 module.exports = pool;
 
