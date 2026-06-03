@@ -23,7 +23,7 @@ async function login() {
         // 1. REMOVIDO console.log(email.value) e console.log(senha.value)
         
         const resposta = await fetch(
-            "https://lisoflix-backend.onrender.com/auth/login",
+            "https://lisoflix-g5ie.onrender.com/auth/login",
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

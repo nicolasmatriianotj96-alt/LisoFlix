@@ -6,11 +6,17 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 
+// 1. CORS tem que vir primeiro de tudo
 app.use(cors({
     origin: 'https://liso-flix.vercel.app',
     methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
+
+// 2. Libera OPTIONS pra todas rotas
+app.options('*', cors());
+
 app.use(express.json());
 
 app.use('/auth', authRoutes);
@@ -20,7 +26,6 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, async () => {
     console.log(`Servidor Rodando na porta ${PORT}`);
     
-    // Cria tabela só depois que servidor subir
     try {
         await db.query(`
             CREATE TABLE IF NOT EXISTS usuarios (
