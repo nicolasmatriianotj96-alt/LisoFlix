@@ -1,8 +1,13 @@
+// Pega URL do Vercel se existir, senão usa a correta direto
+const API_URL = (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_API_URL) 
+    ? process.env.NEXT_PUBLIC_API_URL 
+    : 'https://lisoflix-g5ie.onrender.com';
+
 async function registrar(){
     const usuario = document.getElementById("usuario").value;
     const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
-    const mensagem = document.getElementById("mensagem"); // move pra cima
+    const mensagem = document.getElementById("mensagem");
 
     const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!emailValido.test(email)){
@@ -16,16 +21,18 @@ async function registrar(){
     }
 
     try{
+        console.log('Enviando para:', API_URL + '/auth/register'); // debug
+
         const resposta = await fetch(
-            "https://lisoflix-backend.onrender.com/auth/register",
+            API_URL + '/auth/register',
             {
-                method:"POST",
-                headers:{ "Content-Type":"application/json" },
-                body:JSON.stringify({ usuario, email, senha })
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ usuario, email, senha })
             }
         );
 
-        const dados = await resposta.json(); // lê só 1 vez
+        const dados = await resposta.json();
 
         if(resposta.ok){        
             mensagem.innerText = "Cadastro concluído! Redirecionando...";
@@ -41,7 +48,7 @@ async function registrar(){
         }
 
     } catch(erro){
-        console.log(erro);
+        console.log('Erro fetch:', erro);
         mensagem.innerText = "Erro no servidor. Tente novamente.";
     }
 }
