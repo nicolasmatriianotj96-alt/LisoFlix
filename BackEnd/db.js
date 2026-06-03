@@ -1,14 +1,10 @@
 const { Pool } = require('pg');
-require('dotenv').config();
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
-    family: 4
+    connectionString: process.env.DATABASE_URL
 });
 
-pool.query('SELECT 1')
-    .then(() => console.log('DB conectado'))
-    .catch(e => console.log('Erro no banco:', e.message));
+pool.on('error', (err) => console.log('DB erro:', err.message));
+pool.query('SELECT 1').then(() => console.log('DB conectado')).catch(() => {});
 
 module.exports = pool;
