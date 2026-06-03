@@ -10,7 +10,8 @@ const app = express();
 
 
 app.use(cors({
-    origin: "*"
+    origin: ['https://seu-site.vercel.app', 'http://localhost:3000'],
+    credentials: true
 }));
 app.use(express.json());
 
@@ -49,8 +50,8 @@ app.get("/painel", verificarToken, (req, res) => {
 
 
 // SERVIDOR
-app.listen(3000, () => {
+const PORT = process.env.PORT || 3000;
 
-    console.log("Servidor Rodando na porta 3000");
-
+app.listen(PORT, () => {
+    console.log(`Servidor Rodando na porta ${PORT}`);
 });
