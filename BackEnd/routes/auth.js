@@ -47,7 +47,7 @@ router.post("/register", async (req, res) => {
 
 
 // LOGIN
-router.post("/login", async (req, res) => {
+/*router.post("/login", async (req, res) => {
 
     const { email, senha } = req.body;
     console.log(email);
@@ -137,6 +137,11 @@ router.post("/login", async (req, res) => {
 
 }
 
+}); */
+
+router.post('/register', (req, res) => {
+    console.log('Body recebido:', req.body);
+    res.json({ message: 'Teste ok' });
 });
 
 router.get("/filmes", async (req, res) => {
