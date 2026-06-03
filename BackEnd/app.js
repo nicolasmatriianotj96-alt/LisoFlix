@@ -4,6 +4,10 @@ require("dotenv").config();
 
 const app = express();
 
+const fs = require('fs');
+const sql = fs.readFileSync('./database.sql').toString();
+db.query(sql).then(() => console.log('Tabelas verificadas')).catch(console.error);
+
 // 1. LOG de todas requisições - pra ver no Render se tá chegando
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} Origin: ${req.headers.origin || 'sem origin'}`);
