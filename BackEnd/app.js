@@ -55,3 +55,6 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor Rodando na porta ${PORT}`);
 });
+
+// Só depois do listen você conecta no DB
+db.connect().catch(err => console.log('DB erro:', err))
