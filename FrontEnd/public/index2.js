@@ -24,7 +24,7 @@ async function registrar(){
         console.log('Enviando para:', API_URL + '/auth/register'); // debug
 
         const resposta = await fetch(
-            API_URL + '/auth/register',
+            'https://lisoflix-g5ie.onrender.com/auth/register',
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
