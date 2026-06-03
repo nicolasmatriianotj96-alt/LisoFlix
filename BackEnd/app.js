@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const verificarToken = require("./middleware/auth");
-const db = require("./db");
+//const db = require("./db");
 
 require("dotenv").config();
 
@@ -48,6 +48,10 @@ app.get("/painel", verificarToken, (req, res) => {
 
 });
 
+app.get('/', (req, res) => {
+    res.json({ status: 'Backend online', port: process.env.PORT });
+});
+
 
 // SERVIDOR
 const PORT = process.env.PORT || 3000;
@@ -57,4 +61,4 @@ app.listen(PORT, () => {
 });
 
 // Só depois do listen você conecta no DB
-db.connect().catch(err => console.log('DB erro:', err))
+//db.connect().catch(err => console.log('DB erro:', err))
