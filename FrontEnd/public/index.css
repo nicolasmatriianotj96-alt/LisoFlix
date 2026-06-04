@@ -4,24 +4,23 @@
     box-sizing: border-box;
 }
 
-html, body {
-    width: 100%;
-    min-height: 100vh;
-    background: black;
-    color: white;
+body {
     font-family: Arial, Helvetica, sans-serif;
+    background: black;
     overflow-x: hidden;
+    color: white;
 }
 
 .background {
+    position: relative;
     width: 100%;
     min-height: 100vh;
-    padding: 20px 0 40px 0;
+    padding-top: 20px;
+    padding-bottom: 40px;
     background-image: url('./imagens/planoDeFundo.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    position: relative;
 }
 
 .overlay {
@@ -33,39 +32,92 @@ html, body {
     background: rgba(0,0,0,0.65);
 }
 
-/* TÍTULO OCUPA LARGURA TOTAL */
-h1 {
+.login-container {
     position: relative;
     z-index: 2;
-    padding: 0 40px;
+    margin: auto;
+    width: 90%;
+    max-width: 400px;
+    background: rgba(0,0,0,0.75);
+    padding: 40px;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-container button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: red;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.login-container input {
+    width: 100%;
+    height: 35px;
+    padding: 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0);
+    color: white;
+}
+
+.login-container h1, h3 {
+    text-align: center;
     margin-bottom: 20px;
 }
 
-/* CATÁLOGO TELA CHEIA - TRUQUE DA MARGEM NEGATIVA */
+.registrar {
+    width: 100%;
+    height: 41px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 8px;
+    background: red;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.registrar:hover {
+    background: #cc0000;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* DASHBOARD - CARDS LADO A LADO NO PC */
 .catalogo {
-    position: relative;
-    z-index: 2;
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
     gap: 25px !important;
     margin-top: 30px !important;
-    padding: 0 40px 20px 40px !important;
-    width: calc(100% + 80px) !important; /* 100% + padding dos 2 lados */
-    margin-left: -40px !important; /* puxa pra esquerda */
+    padding: 0 5vw !important; /* 5% da largura da tela de cada lado */
+    width: 100vw !important; /* ocupa 100% da largura da tela */
+    max-width: 100% !important;
     overflow-x: auto !important;
-    scroll-snap-type: x mandatory;
+    scrollbar-width: thin !important;
+    box-sizing: border-box !important;
 }
 
 .catalogo::-webkit-scrollbar {
-    height: 10px;
-}
-.catalogo::-webkit-scrollbar-track {
-    background: #141414;
+    height: 8px !important;
 }
 .catalogo::-webkit-scrollbar-thumb {
-    background: #e50914;
-    border-radius: 5px;
+    background: #e50914 !important;
+    border-radius: 4px !important;
 }
 
 .card {
@@ -75,7 +127,6 @@ h1 {
     overflow: hidden !important;
     text-align: center !important;
     transition: transform 0.2s !important;
-    scroll-snap-align: start;
 }
 
 .card:hover {
@@ -102,53 +153,15 @@ h1 {
     width: calc(100% - 20px) !important;
     margin: 0 10px 12px 10px !important;
     padding: 10px !important;
-    background: red !important;
-    border: none !important;
-    border-radius: 5px !important;
-    color: white !important;
-    cursor: pointer !important;
 }
 
-/* LOGIN */
-.login-container {
-    position: relative;
-    z-index: 2;
-    margin: auto;
-    width: 90%;
-    max-width: 400px;
-    background: rgba(0,0,0,0.75);
-    padding: 40px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.registrar {
-    width: 100%;
-    height: 41px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    border-radius: 8px;
-    background: red;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.registrar:hover { background: #cc0000; }
-
-/* MOBILE */
+/* RESPONSIVO - CELULAR */
 @media (max-width: 768px) {
     .catalogo {
         flex-wrap: wrap !important;
         overflow-x: visible !important;
         justify-content: center !important;
         gap: 15px !important;
-        width: 100% !important;
-        margin-left: 0 !important;
         padding: 0 15px !important;
     }
     .card {
@@ -157,7 +170,65 @@ h1 {
     .card img {
         height: 260px !important;
     }
-    h1 {
-        padding: 0 15px;
+}
+
+@media (max-width: 600px) {
+    .login-container {
+        padding: 25px !important;
     }
+    .login-container h1 {
+        font-size: 28px !important;
+    }
+}
+
+.background {
+    width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important; /* quebra o limite do container pai */
+}
+
+/* ESTOURA O CONTAINER PRA TELA CHEIA */
+html, body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.background {
+    width: 100vw !important;
+    min-width: 100vw !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    position: relative !important;
+}
+
+.catalogo {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 25px !important;
+    margin-top: 30px !important;
+    padding: 0 40px !important; /* espaço só nas laterais */
+    width: 100% !important;
+    min-width: 100% !important;
+    overflow-x: auto !important;
+    box-sizing: border-box !important;
+    margin-left: -40px !important;
+margin-right: -40px !important;
+}
+
+/* Tira o scroll da barra feia e deixa igual Netflix */
+.catalogo::-webkit-scrollbar {
+    height: 10px !important;
+}
+.catalogo::-webkit-scrollbar-track {
+    background: #141414 !important;
+}
+.catalogo::-webkit-scrollbar-thumb {
+    background: #e50914 !important;
+    border-radius: 5px !important;
 }
