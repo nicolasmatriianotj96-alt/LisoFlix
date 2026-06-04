@@ -200,35 +200,30 @@ a{
 .catalogo {
     display: flex !important;
     flex-wrap: wrap !important;
-    justify-content: center !important;
-    gap: 20px !important;
+    justify-content: flex-start !important;
+    gap: 15px !important;
     margin-top: 30px !important;
-    padding: 0 20px !important;
+    padding: 0 15px !important;
 }
 
-/* Cada card com largura fixa */
 .card {
-    width: 180px !important;
+    flex: 0 0 calc(50% - 15px) !important; /* 2 cards por linha no celular */
+    max-width: 200px !important;
     background: #1a1a1a !important;
     border-radius: 8px !important;
     overflow: hidden !important;
     text-align: center !important;
-    transition: transform 0.2s !important;
 }
 
-.card:hover {
-    transform: scale(1.05) !important;
+@media (min-width: 768px) {
+    .card {
+        flex: 0 0 calc(33.333% - 15px) !important; /* 3 cards no tablet */
+    }
 }
 
-.card img {
-    width: 100% !important;
-    height: 260px !important;
-    object-fit: cover !important;
-}
-
-.card h3 {
-    color: white !important;
-    font-size: 16px !important;
-    padding: 10px !important;
-    margin: 0 !important;
+@media (min-width: 1024px) {
+    .card {
+        flex: 0 0 calc(20% - 15px) !important; /* 5 cards no PC */
+        max-width: 180px !important;
+    }
 }
