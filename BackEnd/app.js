@@ -28,29 +28,30 @@ pool.query(`
 
 // CADASTRO
 app.post("/cadastro", async (req, res) => {
-    try {
-        console.log("Recebi:", req.body);
-        const { nome, email, senha } = req.body;
-        
-        if (!nome ||!email ||!senha) {
-            return res.status(400).json({ message: "Preencha todos os campos" });
-        }
-        
-        console.log("Vou criptografar senha...");
-        const hashSenha = await bcrypt.hash(senha, 10);
-        console.log("Senha criptografada");
+    const { nome, email, senha } = req.body;
 
-        console.log("Vou inserir no banco...");
+    if (!nome ||!email ||!senha) {
+        return res.status(400).json({ message: "Preencha todos os campos" });
+    }
+    if (senha.length < 8) {
+        return res.status(400).json({ message: "Senha precisa ter 8+ caracteres" });
+    }
+
+    try {
+        const hashSenha = await bcrypt.hash(senha, 10);
+
         await pool.query(
-            "INSERT INTO usuarios (nome, email, senha) VALUES ($1, $2, $3)",
-            [nome, email, hashSenha]
+            "INSERT INTO usuarios (usuario, email, senha) VALUES ($1, $2, $3)",
+            [nome, email, hashSenha] // nome vai pra coluna usuario
         );
-        console.log("Inserido com sucesso");
 
         res.status(201).json({ message: "Usuário criado com sucesso!" });
     } catch (err) {
-        console.error("ERRO DETALHADO:", err); // isso aparece no log do Render
-        res.status(500).json({ message: err.message }); // manda o erro pro frontend
+        if (err.code === '23505') {
+            return res.status(409).json({ message: "Email já cadastrado" });
+        }
+        console.error(err);
+        res.status(500).json({ message: err.message });
     }
 });
 
