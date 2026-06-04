@@ -7,10 +7,10 @@ const pool = require('./db'); // teu db.js atual
 const app = express();
 
 app.use(cors({
-    origin: 'https://liso-flix.vercel.app',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: ['https://liso-flix.vercel.app', 'http://localhost:3000', 'http://localhost:5500'],
+    credentials: true
 }));
+
 app.use(express.json());
 
 const SECRET = process.env.JWT_SECRET || "lisoflix_secret";
