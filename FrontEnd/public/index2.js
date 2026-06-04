@@ -1,12 +1,23 @@
 async function registrar() {
-    const nome = document.getElementById('nome').value.trim();
-    const usuario = document.getElementById('usuario').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const senha = document.getElementById('senha').value;
+    // Pega os elementos primeiro pra não quebrar se não existir
+    const usuarioEl = document.getElementById('usuario');
+    const emailEl = document.getElementById('email');
+    const senhaEl = document.getElementById('senha');
     const msg = document.getElementById('mensagem');
 
+    // Check se os elementos existem na página
+    if (!usuarioEl || !emailEl || !senhaEl || !msg) {
+        console.error("Erro: Um dos campos não foi encontrado. Confere os id no HTML");
+        alert("Erro interno: campos não encontrados");
+        return;
+    }
+
+    const usuario = usuarioEl.value.trim();
+    const email = emailEl.value.trim();
+    const senha = senhaEl.value;
+
     // Validação frontend
-    if (! ||!email ||!senha) {
+    if (!usuario || !email || !senha) {
         msg.textContent = "Preencha todos os campos";
         msg.style.color = "red";
         return;
@@ -21,6 +32,8 @@ async function registrar() {
     msg.style.color = "white";
 
     try {
+        console.log("Enviando:", { usuario, email, senha }); // log antes do fetch
+
         const res = await fetch('https://lisoflix-g5ie.onrender.com/cadastro', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -29,13 +42,13 @@ async function registrar() {
 
         const data = await res.json();
         msg.textContent = data.message;
-        msg.style.color = res.ok? '#46d369' : 'red';
+        msg.style.color = res.ok ? '#46d369' : 'red';
 
         if (res.ok) {
             // Limpa campos
-            document.getElementById('usuario').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('senha').value = '';
+            usuarioEl.value = '';
+            emailEl.value = '';
+            senhaEl.value = '';
             
             // Redireciona pro login depois de 2s
             setTimeout(() => {
@@ -47,5 +60,4 @@ async function registrar() {
         msg.style.color = "red";
         console.error(err);
     }
-    console.log("Enviando:", { usuario, email, senha });
 }

@@ -1,49 +1,101 @@
-async function registrar() {
-    const usuario = document.getElementById('usuario').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const senha = document.getElementById('senha').value;
-    const msg = document.getElementById('mensagem');
-
-    // Validação frontend
-    if (!usuario || !email || !senha) {
-        msg.textContent = "Preencha todos os campos";
-        msg.style.color = "red";
-        return;
-    }
-    if (senha.length < 8) {
-        msg.textContent = "Senha precisa ter 8+ caracteres";
-        msg.style.color = "red";
-        return;
-    }
-
-    msg.textContent = "Cadastrando...";
-    msg.style.color = "white";
-
-    try {
-        console.log("Enviando:", { usuario, email, senha }); // move o log pra antes do fetch
-        
-        const res = await fetch('https://lisoflix-g5ie.onrender.com/cadastro', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ usuario, email, senha })
-        });
-
-        const data = await res.json();
-        msg.textContent = data.message;
-        msg.style.color = res.ok? '#46d369' : 'red';
-
-        if (res.ok) {
-            document.getElementById('usuario').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('senha').value = '';
-            
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LisoFlix - Cadastro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-    } catch (err) {
-        msg.textContent = "Erro de conexão com servidor";
-        msg.style.color = "red";
-        console.error(err);
-    }
-}
+        body {
+            background: #141414;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #181818;
+            padding: 40px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        h1 {
+            margin-bottom: 30px;
+            text-align: center;
+            color: #e50914;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #333;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+        }
+        input:focus {
+            outline: 2px solid #e50914;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #e50914;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #f40612;
+        }
+        #mensagem {
+            margin-top: 15px;
+            text-align: center;
+            min-height: 20px;
+        }
+        .link {
+            text-align: center;
+            margin-top: 20px;
+            color: #737373;
+        }
+        .link a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro LisoFlix</h1>
+        
+        <input id="usuario" type="text" placeholder="Digite seu usuário" required>
+        <input id="email" type="email" placeholder="Digite seu email" required>
+        <input id="senha" type="password" placeholder="Digite sua senha - 8+ caracteres" required>
+        
+        <button onclick="registrar()">Cadastrar</button>
+        
+        <p id="mensagem"></p>
+        
+        <div class="link">
+            Já tem conta? <a href="index.html">Fazer login</a>
+        </div>
+    </div>
+
+    <script src="index2.js"></script>
+</body>
+</html>
