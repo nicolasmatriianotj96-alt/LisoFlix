@@ -5,35 +5,60 @@ window.onload = async function() {
     const boasvindas = document.getElementById('boasvindas');
     const msg = document.getElementById('mensagem');
 
+    console.log("Token no localStorage:", token); // DEBUG
+
     if (!token) {
+        console.log("Sem token, voltando pro login");
         window.location.href = 'index.html';
         return;
     }
 
     try {
-        const res = await fetch(`${API_URL}/filmes`);
+        console.log("Tentando buscar filmes em:", `${API_URL}/filmes`); // DEBUG
+        
+        const res = await fetch(`${API_URL}/filmes`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+                // /filmes é público, não precisa Authorization
+            }
+        });
+
+        console.log("Status da resposta:", res.status); // DEBUG
+
+        if (!res.ok) {
+            throw new Error(`Erro HTTP ${res.status}`);
+        }
+
         const filmes = await res.json();
+        console.log("Filmes recebidos:", filmes); // DEBUG
 
         const catalogo = document.getElementById('catalogo');
         catalogo.innerHTML = '';
 
-        filmes.forEach(filme => {
-            catalogo.innerHTML += `
-                <div class="card">
-                    <img src="${filme.url_imagem || 'https://via.placeholder.com/180x260'}" alt="${filme.titulo}">
-                    <h3>${filme.titulo}</h3>
-                    <button class="registrar">Assistir</button>
-                </div>
-            `;
-        });
+        if (filmes.length === 0) {
+            catalogo.innerHTML = '<h3>Nenhum filme cadastrado ainda</h3>';
+        } else {
+            filmes.forEach(filme => {
+                catalogo.innerHTML += `
+                    <div class="card">
+                        <img src="${filme.url_imagem || 'https://via.placeholder.com/180x260'}" alt="${filme.titulo}">
+                        <h3>${filme.titulo}</h3>
+                        <button class="registrar">Assistir</button>
+                    </div>
+                `;
+            });
+        }
 
         const nome = localStorage.getItem('nome') || 'usuário';
         boasvindas.textContent = `Olá, ${nome}!`;
+        msg.textContent = "";
 
     } catch (err) {
-        console.error(err);
-        msg.textContent = "Erro ao carregar filmes";
+        console.error("ERRO COMPLETO:", err); // DEBUG
+        msg.textContent = "Erro: " + err.message;
         msg.style.color = "red";
+        boasvindas.textContent = "Falha ao carregar";
     }
 }
 
