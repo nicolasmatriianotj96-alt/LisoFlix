@@ -19,7 +19,7 @@ function authPage(req, res, next) {
 
 const app = express();
 app.use(cors({
-    origin: ['https://liso-flix.versel.app', 'http://localhost:3000'],
+    origin: ['https://liso-flix.vercel.app', 'http://localhost:3000'],
 
     credentials: true
 }));
