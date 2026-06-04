@@ -56,5 +56,40 @@ app.post("/login", async (req, res) => {
     }
 });
 
+app.post("/cadastro", async (req, res) => {
+    console.log("Recebi cadastro:", req.body);
+    const { usuario, email, senha } = req.body;
+
+    if (!usuario || !email || !senha) {
+        return res.status(400).json({ message: "Preencha todos os campos" });
+    }
+
+    try {
+        // Confere se usuário/email já existe
+        const existe = await pool.query(
+            "SELECT * FROM usuarios WHERE email = $1 OR usuario = $2",
+            [email, usuario]
+        );
+
+        if (existe.rows.length > 0) {
+            return res.status(400).json({ message: "Usuário ou email já cadastrado" });
+        }
+
+        // Criptografa senha
+        const senhaHash = await bcrypt.hash(senha, 10);
+
+        // Insere no banco
+        await pool.query(
+            "INSERT INTO usuarios (usuario, email, senha) VALUES ($1, $2, $3)",
+            [usuario, email, senhaHash]
+        );
+
+        res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
+    } catch (err) {
+        console.error("ERRO CADASTRO:", err);
+        res.status(500).json({ message: err.message });
+    }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`));
