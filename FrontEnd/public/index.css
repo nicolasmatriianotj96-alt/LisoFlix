@@ -96,68 +96,84 @@ a {
     text-decoration: none;
 }
 
-/* DASHBOARD - CARDS LADO A LADO */
+/* DASHBOARD - CARDS LADO A LADO NO PC */
 .catalogo {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 25px;
-    margin-top: 30px;
-    padding: 0 30px;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 25px !important;
+    margin-top: 30px !important;
+    padding: 0 30px !important;
+    overflow-x: auto !important;
+    scrollbar-width: thin !important;
+}
+
+.catalogo::-webkit-scrollbar {
+    height: 8px !important;
+}
+.catalogo::-webkit-scrollbar-thumb {
+    background: #e50914 !important;
+    border-radius: 4px !important;
 }
 
 .card {
-    flex: 0 0 220px;
-    background: rgba(26, 26, 26, 0.9);
-    border-radius: 10px;
-    overflow: hidden;
-    text-align: center;
-    transition: transform 0.2s;
+    flex: 0 0 220px !important;
+    background: rgba(26, 26, 26, 0.9) !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    text-align: center !important;
+    transition: transform 0.2s !important;
 }
 
 .card:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) !important;
 }
 
 .card img {
-    width: 100%;
-    height: 330px;
-    object-fit: cover;
-    display: block;
+    width: 100% !important;
+    height: 330px !important;
+    object-fit: cover !important;
+    display: block !important;
 }
 
 .card h3 {
-    color: white;
-    font-size: 16px;
-    padding: 12px 8px;
-    margin: 0;
-    height: 50px;
-    overflow: hidden;
+    color: white !important;
+    font-size: 16px !important;
+    padding: 12px 8px !important;
+    margin: 0 !important;
+    height: 50px !important;
+    overflow: hidden !important;
 }
 
 .card button {
-    width: calc(100% - 20px);
-    margin: 0 10px 12px 10px;
-    padding: 10px;
+    width: calc(100% - 20px) !important;
+    margin: 0 10px 12px 10px !important;
+    padding: 10px !important;
 }
 
-/* RESPONSIVO */
-@media (max-width: 600px) {
-    .login-container {
-        padding: 25px;
-    }
-    .login-container h1 {
-        font-size: 28px;
-    }
+/* RESPONSIVO - CELULAR */
+@media (max-width: 768px) {
     .catalogo {
-        gap: 15px;
-        padding: 0 15px;
-        justify-content: center;
+        flex-wrap: wrap !important;
+        overflow-x: visible !important;
+        justify-content: center !important;
+        gap: 15px !important;
+        padding: 0 15px !important;
     }
     .card {
-        flex: 0 0 calc(50% - 15px);
+        flex: 0 0 calc(50% - 8px) !important;
     }
     .card img {
-        height: 260px;
+        height: 260px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .login-container {
+        padding: 25px !important;
+    }
+    .login-container h1 {
+        font-size: 28px !important;
     }
 }
