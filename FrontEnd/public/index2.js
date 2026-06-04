@@ -1,12 +1,12 @@
 async function registrar() {
-    const nome = document.getElementById('nome').value;
-    const usuario = document.getElementById('usuario').value;
-    const email = document.getElementById('email').value;
+    const nome = document.getElementById('nome').value.trim();
+    const usuario = document.getElementById('usuario').value.trim();
+    const email = document.getElementById('email').value.trim();
     const senha = document.getElementById('senha').value;
     const msg = document.getElementById('mensagem');
 
     // Validação frontend
-    if (!usuario ||!email ||!senha) {
+    if (! ||!email ||!senha) {
         msg.textContent = "Preencha todos os campos";
         msg.style.color = "red";
         return;
