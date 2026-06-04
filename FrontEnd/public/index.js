@@ -13,7 +13,7 @@ async function login() {
     msg.style.color = "white";
 
     try {
-        const res = await fetch('https://corsproxy.io/?https://lisoflix-backend.onrender.com/login', {
+        const res = await fetch('https://lisoflix-backend.onrender.com/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ usuario, senha }) // usuario = email

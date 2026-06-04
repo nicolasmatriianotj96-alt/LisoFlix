@@ -7,7 +7,11 @@ const { Pool } = require('pg');
 const app = express();
 
 // CORS liberado pra tudo
-app.use(cors());
+app.use(cors({
+    origin: '*', // libera tudo pra testar
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 const pool = new Pool({
@@ -55,4 +59,4 @@ app.post("/login", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`));.listen(process.env.PORT || 3000);
+app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`));
