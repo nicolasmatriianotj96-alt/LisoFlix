@@ -7,9 +7,11 @@ const pool = require('./db'); // teu db.js atual
 const app = express();
 
 app.use(cors({
-    origin: ['https://liso-flix.vercel.app', 'http://localhost:3000', 'http://localhost:5500'],
-    credentials: true
+    origin: '*', // libera tudo por enquanto pra testar
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 
 app.use(express.json());
 
@@ -109,5 +111,5 @@ app.get("/auth/filmes", auth, (req, res) => {
     ]);
 });
 
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, '0.0.0.0', () => console.log("Servidor rodando", PORT));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log('Server rodando na porta', PORT));
