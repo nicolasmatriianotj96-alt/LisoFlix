@@ -6,7 +6,6 @@ const { Pool } = require('pg');
 
 const app = express();
 
-// CORS liberado pro teu frontend
 app.use(cors({
     origin: 'https://liso-flix.vercel.app',
     methods: ['GET', 'POST', 'OPTIONS'],
@@ -15,9 +14,6 @@ app.use(cors({
 
 app.use(express.json());
 
-// Responde preflight
-app.options('*', cors());
-
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
@@ -25,9 +21,7 @@ const pool = new Pool({
 
 const SECRET = process.env.JWT_SECRET || 'chave_teste_123';
 
-app.get("/", (req, res) => {
-    res.send("API OK");
-});
+app.get("/", (req, res) => res.send("API OK"));
 
 app.post("/login", async (req, res) => {
     console.log("Recebi login:", req.body);
