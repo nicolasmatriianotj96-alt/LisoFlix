@@ -23,7 +23,7 @@ async function registrar() {
         const res = await fetch('https://lisoflix-g5ie.onrender.com/cadastro', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, email, senha })
+            body: JSON.stringify({ usuario, email, senha })
         });
 
         const data = await res.json();
@@ -46,4 +46,5 @@ async function registrar() {
         msg.style.color = "red";
         console.error(err);
     }
+    console.log("Enviando:", { usuario, email, senha });
 }
