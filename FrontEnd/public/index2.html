@@ -5,23 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LisoFlix - Cadastro</title>
     <link rel="stylesheet" href="index.css">
-    
 </head>
 <body>
-    <div class="container">
-        <h1>Cadastro LisoFlix</h1>
+    <div class="background">
+        <div class="overlay"></div>
         
-        <input id="usuario" type="text" placeholder="Digite seu usuário" required>
-        <input id="email" type="email" placeholder="Digite seu email" required>
-        <input id="senha" type="password" placeholder="Digite sua senha - 8+ caracteres" required>
-        
-        <button onclick="registrar()">Cadastrar</button>
-        <button onclick="window.location.href='index.html'" style="background:#333;margin-top:10px;">Voltar</button>
-        
-        <p id="mensagem"></p>
-        
-        <div class="link">
-            Já tem conta? <a href="index.html">Fazer login</a>
+        <div class="login-container">
+            <h1>Cadastro LisoFlix</h1>
+            
+            <input id="usuario" type="text" placeholder="Usuário" required>
+            <input id="email" type="email" placeholder="Email" required>
+            <input id="senha" type="password" placeholder="Senha - 8+ caracteres" required>
+            
+            <button class="registrar" onclick="registrar()">Cadastrar</button>
+            <button class="registrar" onclick="window.location.href='index.html'" style="background:#333;">Voltar</button>
+            
+            <p id="mensagem"></p>
+            
+            <h3>Já tem conta? <a href="index.html" style="color:red;">Fazer login</a></h3>
         </div>
     </div>
 
