@@ -90,5 +90,29 @@ app.post("/cadastro", async (req, res) => {
     }
 });
 
+// Middleware JWT
+function authMiddleware(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) return res.status(401).json({ message: "Token não enviado" });
+
+    jwt.verify(token, SECRET, (err, user) => {
+        if (err) return res.status(403).json({ message: "Token inválido" });
+        req.user = user;
+        next();
+    });
+}
+
+// Rota protegida
+app.get("/dashboard", authMiddleware, async (req, res) => {
+    try {
+        const result = await pool.query("SELECT usuario FROM usuarios WHERE id = $1", [req.user.id]);
+        res.json({ usuario: result.rows[0].usuario });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`));

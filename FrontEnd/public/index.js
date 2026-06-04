@@ -23,11 +23,12 @@ async function login() {
 
         if (res.ok) {
             localStorage.setItem("token", data.token);
+            localStorage.setItem("nome", data.nome);
             msg.textContent = "Login ok! Redirecionando...";
             msg.style.color = "#46d369";
 
             setTimeout(() => {
-                window.location.href = 'index3.html'; // tua área logada
+                window.location.href = 'dashboard.html'; // tua área logada
             }, 1000);
         } else {
             msg.textContent = data.message;
