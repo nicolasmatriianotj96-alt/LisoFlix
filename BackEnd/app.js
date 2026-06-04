@@ -1,115 +1,58 @@
 const express = require('express');
 const cors = require('cors');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const pool = require('./db'); // teu db.js atual
+const { Pool } = require('pg');
 
 const app = express();
 
-app.use(cors({
-    origin: '*', // libera tudo por enquanto pra testar
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-
+// CORS liberado pra tudo
+app.use(cors());
 app.use(express.json());
 
-const SECRET = process.env.JWT_SECRET || "lisoflix_secret";
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false }
+});
 
-// Cria tabela se não existir - roda 1x no start
-pool.query(`
-    CREATE TABLE IF NOT EXISTS usuarios (
-        id SERIAL PRIMARY KEY,
-        nome VARCHAR(100) NOT NULL,
-        email VARCHAR(100) UNIQUE NOT NULL,
-        senha TEXT NOT NULL,
-        criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-`);
+const SECRET = process.env.JWT_SECRET || 'chave_teste_123';
 
-// CADASTRO
-app.post("/cadastro", async (req, res) => {
-    const { nome, email, senha } = req.body;
+app.get("/", (req, res) => {
+    res.send("API OK");
+});
 
-    if (!nome ||!email ||!senha) {
-        return res.status(400).json({ message: "Preencha todos os campos" });
-    }
-    if (senha.length < 8) {
-        return res.status(400).json({ message: "Senha precisa ter 8+ caracteres" });
+app.post("/login", async (req, res) => {
+    console.log("Recebi login:", req.body); // pra ver no log
+    const { usuario, senha } = req.body;
+
+    if (!usuario ||!senha) {
+        return res.status(400).json({ message: "Preencha tudo" });
     }
 
     try {
-        const hashSenha = await bcrypt.hash(senha, 10);
-
-        await pool.query(
-            "INSERT INTO usuarios (usuario, email, senha) VALUES ($1, $2, $3)",
-            [nome, email, hashSenha] // nome vai pra coluna usuario
+        const result = await pool.query(
+            "SELECT * FROM usuarios WHERE email = $1 OR usuario = $1",
+            [usuario]
         );
 
-        res.status(201).json({ message: "Usuário criado com sucesso!" });
-    } catch (err) {
-        if (err.code === '23505') {
-            return res.status(409).json({ message: "Email já cadastrado" });
+        if (result.rows.length === 0) {
+            return res.status(401).json({ message: "Usuário não encontrado" });
         }
-        console.error(err);
+
+        const user = result.rows[0];
+        const senhaValida = await bcrypt.compare(senha, user.senha);
+
+        if (!senhaValida) {
+            return res.status(401).json({ message: "Senha errada" });
+        }
+
+        const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: "1h" });
+        res.json({ token, nome: user.usuario });
+    } catch (err) {
+        console.error("ERRO LOGIN:", err);
         res.status(500).json({ message: err.message });
     }
 });
 
-// LOGIN com bcrypt
-app.post("/login", async (req, res) => {
-    const { usuario, senha } = req.body; // usuario = email
-
-    if (!usuario ||!senha) {
-        return res.status(400).json({ message: "Preencha email e senha" });
-    }
-
-    try {
-        const result = await pool.query("SELECT * FROM usuarios WHERE email = $1", [usuario]);
-        const user = result.rows[0];
-
-        if (!user) {
-            return res.status(401).json({ message: "Email ou senha inválidos" });
-        }
-
-        // Compara senha digitada com hash do banco
-        const senhaValida = await bcrypt.compare(senha, user.senha);
-        if (!senhaValida) {
-            return res.status(401).json({ message: "Email ou senha inválidos" });
-        }
-
-        const token = jwt.sign(
-            { id: user.id, email: user.email, nome: user.nome },
-            SECRET,
-            { expiresIn: "1h" }
-        );
-
-        res.json({ token, nome: user.nome });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Erro no servidor" });
-    }
-});
-
-// Auth middleware igual antes
-function auth(req, res, next) {
-    const token = req.headers["authorization"];
-    if (!token) return res.sendStatus(403);
-    try {
-        jwt.verify(token, SECRET);
-        next();
-    } catch {
-        return res.sendStatus(403);
-    }
-}
-
-app.get("/auth/filmes", auth, (req, res) => {
-    res.json([
-        { id: 1, titulo: "Batman", capa: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg", url: "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4" },
-        { id: 2, titulo: "Free Guy", capa: "https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg", url: "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4" }
-    ]);
-});
-
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log('Server rodando na porta', PORT));
+app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`));.listen(process.env.PORT || 3000);
