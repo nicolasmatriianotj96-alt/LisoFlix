@@ -155,3 +155,66 @@ a{
 .card:hover{
     transform:scale(1.05);
 }
+
+.catalogo {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.card {
+    width: 200px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    background: rgba(0,0,0,0.7);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.card h3 {
+    text-align: center;
+    color: white;
+    padding: 10px;
+    margin: 0;
+}
+
+/* Modal do vídeo */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-conteudo {
+    width: 80%;
+    max-width: 900px;
+    position: relative;
+}
+
+.fechar {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+}
