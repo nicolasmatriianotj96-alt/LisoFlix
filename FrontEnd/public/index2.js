@@ -1,7 +1,7 @@
 async function registrar() {
-    const nome = document.getElementById('nome').value.trim();
-    const usuario = document.getElementById('usuario').value.trim();
-    const email = document.getElementById('email').value.trim();
+    const nome = document.getElementById('nome').value;
+    const usuario = document.getElementById('usuario').value;
+    const email = document.getElementById('email').value;
     const senha = document.getElementById('senha').value;
     const msg = document.getElementById('mensagem');
 
