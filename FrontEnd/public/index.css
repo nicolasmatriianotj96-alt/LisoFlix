@@ -104,9 +104,12 @@ a {
     justify-content: flex-start !important;
     gap: 25px !important;
     margin-top: 30px !important;
-    padding: 0 30px !important;
+    padding: 0 5vw !important; /* 5% da largura da tela de cada lado */
+    width: 100vw !important; /* ocupa 100% da largura da tela */
+    max-width: 100% !important;
     overflow-x: auto !important;
     scrollbar-width: thin !important;
+    box-sizing: border-box !important;
 }
 
 .catalogo::-webkit-scrollbar {
@@ -176,4 +179,9 @@ a {
     .login-container h1 {
         font-size: 28px !important;
     }
+}
+
+.background {
+    width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important; /* quebra o limite do container pai */
 }
