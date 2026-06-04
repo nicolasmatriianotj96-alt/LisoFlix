@@ -58,8 +58,7 @@ app.post("/login", async (req, res) => {
 
 app.post("/cadastro", async (req, res) => {
     console.log("Recebi cadastro:", req.body);
-    const { usuario, email, senha } = req.body;
-
+    const { nome, usuario, email, senha } = req.body;
     if (!usuario || !email || !senha) {
         return res.status(400).json({ message: "Preencha todos os campos" });
     }
