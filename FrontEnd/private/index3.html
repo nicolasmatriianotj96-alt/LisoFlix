@@ -20,35 +20,11 @@
                 <button onclick="logout()">Sair</button>
             </div>
 
-            <div class="catalogo" style="display:flex !important; gap:20px; flex-wrap:wrap; justify-content:center; margin-top:30px; position:relative; z-index:9999">
-                <div class="card" onclick="abrirVideo('https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4', 'Batman')">
-                    <img src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg">
-                    <h3>Batman</h3>
-                </div>
-
-                <div class="card" onclick="abrirVideo('https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4', 'Free Guy')">
-                    <img src="https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg">
-                    <h3>Free Guy</h3>
-                </div>
-
-                <div class="card" onclick="abrirVideo('https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4', 'Dr. Strange')">
-                    <img src="https://image.tmdb.org/t/p/w500/9Gtg2DzBhmYamXBS1hKAhiwbBKS.jpg">
-                    <h3>Dr. Strange</h3>
-                </div>
-            </div>
+            
         </div>
     </div>
 
-    <!-- MODAL DO PLAYER - só aparece ao clicar -->
-    <div id="modalVideo" class="modal">
-        <div class="modal-conteudo">
-            <span class="fechar" onclick="fecharVideo()">&times;</span>
-            <h2 id="tituloVideo"></h2>
-            <video id="player" controls autoplay style="width:100%; border-radius:8px; background:#000">
-                <source src="" type="video/mp4">
-            </video>
-        </div>
-    </div>
+    
 
     <script src="index3.js"></script>
     <script>
@@ -67,44 +43,7 @@
             history.go(1);
         };
 
-        // Funções do player
-        function abrirVideo(url, titulo) {
-            const modal = document.getElementById('modalVideo');
-            const player = document.getElementById('player');
-            const tituloEl = document.getElementById('tituloVideo');
-            
-            tituloEl.textContent = titulo;
-            player.src = url;
-            modal.style.display = 'flex';
-            player.play();
-        }
-
-        function fecharVideo() {
-            const modal = document.getElementById('modalVideo');
-            const player = document.getElementById('player');
-            
-            player.pause();
-            player.src = '';
-            modal.style.display = 'none';
-        }
-
-        // Fecha modal clicando fora
-        window.onclick = function(event) {
-            const modal = document.getElementById('modalVideo');
-            if (event.target == modal) {
-                fecharVideo();
-            }
-        }
-    </script>
-
-<script>
-console.log('Token:', localStorage.getItem("token"));
-console.log('Cards encontrados:', document.querySelectorAll('.card').length);
-document.querySelectorAll('.card').forEach((c,i) => {
-    c.style.border = '3px solid red';
-    c.style.display = 'block !important';
-    console.log('Card', i, c);
-});
+        
 </script>
 </body>
 </html>

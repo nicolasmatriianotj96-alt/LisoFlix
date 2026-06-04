@@ -111,84 +111,11 @@ a{
     justify-content: center;
 }
 
-/* CATALOGO E CARDS - CORRIGIDO */
-.catalogo{
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
+#mensagem{
+    color: white;
+    text-align: center;
     margin-top: 30px;
-    position: relative;
-    z-index: 2;
-}
-
-.card{
-    width: 200px;
-    cursor: pointer;
-    transition: transform 0.3s;
-    background: rgba(0,0,0,0.8);
-    border-radius: 10px;
-    overflow: hidden;
-    display: block;
-}
-
-.card:hover{
-    transform: scale(1.05);
-}
-
-.card img{
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    display: block;
-}
-
-.card h3{
-    text-align: center;
-    color: white;
-    padding: 10px;
-    margin: 0;
-    font-size: 16px;
-}
-
-/* MODAL DO VÍDEO */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.9);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-conteudo {
-    width: 90%;
-    max-width: 900px;
-    position: relative;
-}
-
-.modal-conteudo h2 {
-    color: white;
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.fechar {
-    position: absolute;
-    top: -40px;
-    right: 0;
-    font-size: 40px;
-    color: white;
-    cursor: pointer;
-    z-index: 1001;
-}
-
-.fechar:hover {
-    color: red;
+    font-size: 18px;
 }
 
 @media (max-width: 600px){
@@ -197,11 +124,5 @@ a{
     }
     .login-container h1{
         font-size: 28px;
-    }
-    .card{
-        width: 150px;
-    }
-    .card img{
-        height: 225px;
     }
 }
