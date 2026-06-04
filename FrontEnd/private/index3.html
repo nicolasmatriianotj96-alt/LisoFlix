@@ -20,7 +20,7 @@
                 <button onclick="logout()">Sair</button>
             </div>
 
-            <div class="catalogo">
+            <div class="catalogo" style="display:flex !important; gap:20px; flex-wrap:wrap; justify-content:center; margin-top:30px; position:relative; z-index:9999">
                 <div class="card" onclick="abrirVideo('https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4', 'Batman')">
                     <img src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg">
                     <h3>Batman</h3>
@@ -96,5 +96,15 @@
             }
         }
     </script>
+
+<script>
+console.log('Token:', localStorage.getItem("token"));
+console.log('Cards encontrados:', document.querySelectorAll('.card').length);
+document.querySelectorAll('.card').forEach((c,i) => {
+    c.style.border = '3px solid red';
+    c.style.display = 'block !important';
+    console.log('Card', i, c);
+});
+</script>
 </body>
 </html>
