@@ -114,5 +114,16 @@ app.get("/dashboard", authMiddleware, async (req, res) => {
     }
 });
 
+// ROTA PÚBLICA - LISTAR FILMES
+app.get("/filmes", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM filmes ORDER BY id DESC");
+        res.json(result.rows);
+    } catch (erro) {
+        console.error('ERRO FILMES:', erro);
+        res.status(500).json({ message: "Erro ao buscar filmes" });
+    }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`));
