@@ -7,11 +7,10 @@ const authRoutes = require('./routes/auth');
 const app = express();
 
 app.use(cors({
-    origin: 'https://liso-flix.vercel.app',
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: ['https://liso-flix.vercel.app', 'http://localhost:3000'], // domínios permitidos
     credentials: true
 }));
+
 //app.options(/.*/, cors());
 app.use(express.json());
 app.use('/auth', authRoutes);

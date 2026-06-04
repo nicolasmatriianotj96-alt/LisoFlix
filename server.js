@@ -18,7 +18,11 @@ function authPage(req, res, next) {
 }
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: ['https://liso-flix.versel.app', 'http://localhost:3000'],
+
+    credentials: true
+}));
 app.use(express.json());
 
 const path = require("path");
