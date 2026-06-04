@@ -6,13 +6,18 @@ const { Pool } = require('pg');
 
 const app = express();
 
-// CORS liberado pra tudo
+// CORS específico pro teu frontend Vercel
 app.use(cors({
-    origin: '*', // libera tudo pra testar
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: 'https://liso-flix.vercel.app',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: false
 }));
+
 app.use(express.json());
+
+// Responde preflight na mão
+app.options('*', cors());
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -21,12 +26,10 @@ const pool = new Pool({
 
 const SECRET = process.env.JWT_SECRET || 'chave_teste_123';
 
-app.get("/", (req, res) => {
-    res.send("API OK");
-});
+app.get("/", (req, res) => res.send("API OK"));
 
 app.post("/login", async (req, res) => {
-    console.log("Recebi login:", req.body); // pra ver no log
+    console.log("Recebi login:", req.body);
     const { usuario, senha } = req.body;
 
     if (!usuario ||!senha) {
@@ -43,15 +46,15 @@ app.post("/login", async (req, res) => {
             return res.status(401).json({ message: "Usuário não encontrado" });
         }
 
-        const user = result.rows[0];
+        const user = resul "1h" });
+        res.json({ token, not.rows[0];
         const senhaValida = await bcrypt.compare(senha, user.senha);
 
         if (!senhaValida) {
             return res.status(401).json({ message: "Senha errada" });
         }
 
-        const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: "1h" });
-        res.json({ token, nome: user.usuario });
+        const token = jwt.sign({ id: user.id }, SECRET, { expiresIn:me: user.usuario });
     } catch (err) {
         console.error("ERRO LOGIN:", err);
         res.status(500).json({ message: err.message });
