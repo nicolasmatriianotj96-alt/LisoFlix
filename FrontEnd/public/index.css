@@ -217,6 +217,8 @@ html, body {
     min-width: 100% !important;
     overflow-x: auto !important;
     box-sizing: border-box !important;
+    margin-left: -40px !important;
+margin-right: -40px !important;
 }
 
 /* Tira o scroll da barra feia e deixa igual Netflix */
