@@ -5,34 +5,31 @@ window.onload = async function() {
     const boasvindas = document.getElementById('boasvindas');
     const msg = document.getElementById('mensagem');
 
-    console.log("Token no localStorage:", token); // DEBUG
-
     if (!token) {
-        console.log("Sem token, voltando pro login");
         window.location.href = 'index.html';
         return;
     }
 
+    const nome = localStorage.getItem('nome') || 'usuário';
+    boasvindas.textContent = `Olá, ${nome}!`;
+
     try {
-        console.log("Tentando buscar filmes em:", `${API_URL}/filmes`); // DEBUG
-        
         const res = await fetch(`${API_URL}/filmes`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
-                // /filmes é público, não precisa Authorization
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token // MANDA TOKEN
             }
         });
 
-        console.log("Status da resposta:", res.status); // DEBUG
-
-        if (!res.ok) {
-            throw new Error(`Erro HTTP ${res.status}`);
+        if(res.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('nome');
+            window.location.href = 'index.html';
+            return;
         }
 
         const filmes = await res.json();
-        console.log("Filmes recebidos:", filmes); // DEBUG
-
         const catalogo = document.getElementById('catalogo');
         catalogo.innerHTML = '';
 
@@ -50,12 +47,10 @@ window.onload = async function() {
             });
         }
 
-        const nome = localStorage.getItem('nome') || 'usuário';
-        boasvindas.textContent = `Olá, ${nome}!`;
         msg.textContent = "";
 
     } catch (err) {
-        console.error("ERRO COMPLETO:", err); // DEBUG
+        console.error("ERRO COMPLETO:", err);
         msg.textContent = "Erro: " + err.message;
         msg.style.color = "red";
         boasvindas.textContent = "Falha ao carregar";
