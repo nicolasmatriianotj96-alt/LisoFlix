@@ -31,6 +31,7 @@ router.post("/register", async (req, res) => {
     } catch (erro) {
         console.error('ERRO NO REGISTER:', erro);
 
+        // Erro de email/usuario duplicado Postgres
         if (erro.code === "23505") {
             return res.status(400).json({ mensagem: "Email ou usuário já cadastrado" });
         }
@@ -39,21 +40,15 @@ router.post("/register", async (req, res) => {
     }
 });
 
-// LOGIN - CORRIGIDO: aceita email OU usuario
+// LOGIN
 router.post("/login", async (req, res) => {
-    const { email, senha, usuario } = req.body;
-    const login = email || usuario;
-    
-    console.log('Login tentado:', login);
-
-    if (!login || !senha) {
-        return res.status(400).json({ mensagem: "Preencha email/usuário e senha" });
-    }
+    const { email, senha } = req.body;
+    console.log('Login:', email);
 
     try {
         const result = await db.query(
-            "SELECT * FROM usuarios WHERE email = $1 OR usuario = $1",
-            [login]
+            "SELECT * FROM usuarios WHERE email = $1",
+            [email]
         );
 
         if (result.rows.length === 0) {
@@ -74,11 +69,11 @@ router.post("/login", async (req, res) => {
             { expiresIn: "1d" }
         );
 
-        res.json({
-            mensagem: "Login realizado",
-            token,
-            nome: usuarioBanco.usuario
-        });
+        res.json({ 
+    mensagem: "Login realizado", 
+    token,
+    nome: usuarioBanco.usuario
+});
 
     } catch (erro) {
         console.error('ERRO NO LOGIN:', erro);
@@ -86,8 +81,22 @@ router.post("/login", async (req, res) => {
     }
 });
 
-// LISTAR FILMES
-router.get("/filmes", async (req, res) => {
+// COLA ISSO ANTES DA ROTA /FILMES, DEPOIS DO LOGIN
+function auth(req, res, next) {
+    const token = req.headers.authorization?.split(' ')[1];
+    if(!token) return res.status(401).json({ mensagem: 'Token faltando' });
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        next();
+    } catch {
+        return res.status(401).json({ mensagem: 'Token inválido' });
+    }
+}
+
+// SUBSTITUI A ROTA /FILMES INTEIRA POR ESSA
+router.get("/filmes", auth, async (req, res) => {
     try {
         const result = await db.query("SELECT * FROM filmes");
         res.json(result.rows);
