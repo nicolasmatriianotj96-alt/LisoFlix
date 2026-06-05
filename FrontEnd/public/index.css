@@ -178,3 +178,11 @@ html, body {
     margin: 0 !important;
     padding: 0 !important;
 }
+
+.card img {
+    width: 100% !important;
+    height: 270px !important;
+    object-fit: cover !important;
+    display: block !important;
+    background: #222 !important;
+}
