@@ -22,12 +22,16 @@ window.onload = async function() {
             {
                 id: 9991,
                 titulo: 'A Origem',
-                url_imagem: '/imagens/origem.jpg'
+                url_imagem: '/imagens/origem.jpg',
+                url_trailer: 'https://youtube.com/watch?v=YoHD9XEInc0'
+                
             },
             {
                 id: 9992,
                 titulo: 'Alice no País das Maravilhas',
                 url_imagem: '/imagens/alice.jpg'
+                
+
             }
         ];
 
@@ -47,7 +51,7 @@ window.onload = async function() {
                 <div class="card">
                     <img src="${filme.url_imagem}" alt="${filme.titulo}">
                     <h3>${filme.titulo}</h3>
-                    <button class="registrar">Assistir</button>
+                    <button class="registrar" onclick="window.open('${filme.url_trailer}', '_blank')">Assistir</button>
                 </div>
             `;
         });
