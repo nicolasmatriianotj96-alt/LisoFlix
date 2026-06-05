@@ -9,22 +9,19 @@
 <body>
     
 
-    <div class="background">
-        <div class="overlay"></div>
-
-        <div class="login-container">
-            <h1>LisoFlix</h1>
-            <h3>Entrar</h3>
-            <input type="email" id="usuario" placeholder="Digite seu email">
-            <input type="password" id="senha" placeholder="Digite sua senha">
-            <button type="button" onclick="login()">Login</button>   
-            <a href="index2.html" class="registrar">
-                Registrar
-            </a>
-            <p id="mensagem"></p>
-               
-        </div>
-    </div>
+    <div class="login-container">
+    <h1>LisoFlix</h1>
+    <h3>Entrar</h3>
+    <form id="form-login"> <!-- WRAP NOS INPUTS -->
+        <input type="email" id="email" placeholder="Digite seu email" required>
+        <input type="password" id="senha" placeholder="Digite sua senha" required>
+        <button type="submit" class="registrar">Login</button> <!-- type=submit, sem onclick -->
+        <a href="index2.html" class="registrar" style="background:#555;margin-top:10px;">
+            Registrar
+        </a>
+        <p id="mensagem"></p>
+    </form>
+</div>
 
    
     

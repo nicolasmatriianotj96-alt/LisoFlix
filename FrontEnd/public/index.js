@@ -1,13 +1,13 @@
-const form = document.querySelector('form');
+const form = document.getElementById('form-login');
 const msg = document.getElementById('mensagem');
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById('email').value;
+    const email = document.getElementById('email').value.trim();
     const senha = document.getElementById('senha').value;
 
-    if (!email ||!senha) {
+    if (!email || !senha) {
         msg.textContent = "Preencha email e senha";
         msg.style.color = "red";
         return;
@@ -20,14 +20,14 @@ form.addEventListener('submit', async (e) => {
         const res = await fetch('https://lisoflix-g5ie.onrender.com/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, senha }) // CORRETO: manda email, não usuario
+            body: JSON.stringify({ email, senha })
         });
 
         const data = await res.json();
 
         if (res.ok) {
             localStorage.setItem("token", data.token);
-            localStorage.setItem("nome", data.nome); // agora vai vir preenchido
+            localStorage.setItem("nome", data.nome);
             msg.textContent = "Login ok! Redirecionando...";
             msg.style.color = "#46d369";
 
@@ -35,7 +35,7 @@ form.addEventListener('submit', async (e) => {
                 window.location.href = 'dashboard.html';
             }, 1000);
         } else {
-            msg.textContent = data.mensagem; // CORRETO: mensagem, não message
+            msg.textContent = data.mensagem;
             msg.style.color = "red";
         }
     } catch (err) {
