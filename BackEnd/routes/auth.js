@@ -31,7 +31,6 @@ router.post("/register", async (req, res) => {
     } catch (erro) {
         console.error('ERRO NO REGISTER:', erro);
 
-        // Erro de email/usuario duplicado Postgres
         if (erro.code === "23505") {
             return res.status(400).json({ mensagem: "Email ou usuário já cadastrado" });
         }
@@ -40,7 +39,7 @@ router.post("/register", async (req, res) => {
     }
 });
 
-// LOGIN
+// LOGIN - CORRIGIDO: agora retorna nome
 router.post("/login", async (req, res) => {
     const { email, senha } = req.body;
     console.log('Login:', email);
@@ -69,11 +68,11 @@ router.post("/login", async (req, res) => {
             { expiresIn: "1d" }
         );
 
-        res.json({ 
-    mensagem: "Login realizado", 
-    token,
-    nome: usuarioBanco.usuario
-});
+        res.json({
+            mensagem: "Login realizado",
+            token,
+            nome: usuarioBanco.usuario
+        });
 
     } catch (erro) {
         console.error('ERRO NO LOGIN:', erro);
@@ -81,22 +80,8 @@ router.post("/login", async (req, res) => {
     }
 });
 
-// COLA ISSO ANTES DA ROTA /FILMES, DEPOIS DO LOGIN
-function auth(req, res, next) {
-    const token = req.headers.authorization?.split(' ')[1];
-    if(!token) return res.status(401).json({ mensagem: 'Token faltando' });
-
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
-        next();
-    } catch {
-        return res.status(401).json({ mensagem: 'Token inválido' });
-    }
-}
-
-// SUBSTITUI A ROTA /FILMES INTEIRA POR ESSA
-router.get("/filmes", auth, async (req, res) => {
+// LISTAR FILMES - continua público como estava
+router.get("/filmes", async (req, res) => {
     try {
         const result = await db.query("SELECT * FROM filmes");
         res.json(result.rows);

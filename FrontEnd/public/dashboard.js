@@ -5,7 +5,7 @@ window.onload = async function() {
     const boasvindas = document.getElementById('boasvindas');
     const msg = document.getElementById('mensagem');
 
-    console.log("Token no localStorage:", token); // DEBUG
+    console.log("Token no localStorage:", token);
 
     if (!token) {
         console.log("Sem token, voltando pro login");
@@ -13,25 +13,27 @@ window.onload = async function() {
         return;
     }
 
-    try {
-        console.log("Tentando buscar filmes em:", `${API_URL}/filmes`); // DEBUG
-        
-        const res = await fetch(`${API_URL}/filmes`, {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-    }
-});
+    const nome = localStorage.getItem('nome') || 'usuário';
+    boasvindas.textContent = `Olá, ${nome}!`;
 
-        console.log("Status da resposta:", res.status); // DEBUG
+    try {
+        console.log("Tentando buscar filmes em:", `${API_URL}/filmes`);
+
+        const res = await fetch(`${API_URL}/filmes`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        console.log("Status da resposta:", res.status);
 
         if (!res.ok) {
             throw new Error(`Erro HTTP ${res.status}`);
         }
 
         const filmes = await res.json();
-        console.log("Filmes recebidos:", filmes); // DEBUG
+        console.log("Filmes recebidos:", filmes);
 
         const catalogo = document.getElementById('catalogo');
         catalogo.innerHTML = '';
@@ -50,12 +52,10 @@ window.onload = async function() {
             });
         }
 
-        const nome = localStorage.getItem('nome') || 'usuário';
-        boasvindas.textContent = `Olá, ${nome}!`;
         msg.textContent = "";
 
     } catch (err) {
-        console.error("ERRO COMPLETO:", err); // DEBUG
+        console.error("ERRO COMPLETO:", err);
         msg.textContent = "Erro: " + err.message;
         msg.style.color = "red";
         boasvindas.textContent = "Falha ao carregar";
