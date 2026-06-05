@@ -77,6 +77,7 @@ function abrirTrailer(urlYoutube) {
     const urlEmbed = `https://www.youtube.com/embed/${videoId}?hl=pt&autoplay=1&rel=0`;
 
     console.log('Abrindo trailer:', urlEmbed); // pra debugar no F12
+    alert(urlEmbed);
 
     document.getElementById('modal').style.display = 'flex';
     document.getElementById('player').src = urlEmbed;
