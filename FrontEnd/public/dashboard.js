@@ -17,37 +17,36 @@ window.onload = async function() {
         const res = await fetch(`${API_URL}/filmes`);
         let filmes = await res.json();
         
-        // Fallback com tuas imagens locais
-        const filmesFallback = [
+        // Força usar tuas imagens locais pros 2 filmes
+        const filmesForcados = [
             {
                 id: 1,
                 titulo: 'A Origem',
-                url_imagem: './imagens/origem.jpg'  // usa a imagem que tu baixou
+                url_imagem: '/imagens/origem.jpg'
             },
             {
                 id: 2,
                 titulo: 'Alice no País das Maravilhas',
-                url_imagem: './imagens/alice.jpg'   // usa a imagem que tu baixou
+                url_imagem: '/imagens/alice.jpg'
             }
         ];
 
+        // Se banco vazio, usa só os 2 locais
         if (filmes.length === 0) {
-            filmes = filmesFallback;
+            filmes = filmesForcados;
         } else {
-            // Se algum filme do banco não tiver imagem, usa local
-            filmes = filmes.map((f, i) => ({
-                ...f,
-                url_imagem: f.url_imagem || filmesFallback[i % 2].url_imagem
-            }));
+            // Se tiver filmes no banco, adiciona os 2 no final
+            filmes = [...filmes, ...filmesForcados];
         }
 
         const catalogo = document.getElementById('catalogo');
         catalogo.innerHTML = '';
 
         filmes.forEach(filme => {
+            console.log('Carregando imagem:', filme.titulo, filme.url_imagem);
             catalogo.innerHTML += `
                 <div class="card">
-                    <img src="${filme.url_imagem}" alt="${filme.titulo}" onerror="this.src='https://via.placeholder.com/180x270?text=Sem+Imagem'">
+                    <img src="${filme.url_imagem}" alt="${filme.titulo}">
                     <h3>${filme.titulo}</h3>
                     <button class="registrar">Assistir</button>
                 </div>
