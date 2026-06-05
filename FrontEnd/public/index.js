@@ -11,9 +11,6 @@ async function login() {
         return;
     }
 
-    const bodyEnviado = { usuario: login, email: login, senha };
-    console.log('Body enviado:', bodyEnviado);
-
     msg.textContent = "Entrando...";
     msg.style.color = "white";
 
@@ -21,7 +18,7 @@ async function login() {
         const res = await fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(bodyEnviado)
+            body: JSON.stringify({ usuario: login, senha })
         });
 
         console.log('Status:', res.status);
@@ -37,7 +34,7 @@ async function login() {
                 window.location.href = 'dashboard.html';
             }, 1000);
         } else {
-            msg.textContent = data.mensagem;
+            msg.textContent = data.mensagem || "Erro ao logar";
             msg.style.color = "red";
         }
     } catch (err) {

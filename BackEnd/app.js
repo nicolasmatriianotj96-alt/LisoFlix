@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs'); // mantive bcryptjs como estava
 const jwt = require('jsonwebtoken');
 const { Pool } = require('pg');
 
@@ -25,103 +25,80 @@ app.get("/", (req, res) => res.send("API OK"));
 
 app.post("/login", async (req, res) => {
     console.log("Recebi login:", req.body);
-    const { usuario, senha } = req.body;
+    const { usuario, email, senha } = req.body;
+    const login = usuario || email;
 
-    if (!usuario ||!senha) {
-        return res.status(400).json({ message: "Preencha tudo" });
+    if (!login ||!senha) {
+        return res.status(400).json({ mensagem: "Preencha email/usuário e senha" });
     }
 
     try {
         const result = await pool.query(
             "SELECT * FROM usuarios WHERE email = $1 OR usuario = $1",
-            [usuario]
+            [login]
         );
 
         if (result.rows.length === 0) {
-            return res.status(401).json({ message: "Usuário não encontrado" });
+            return res.status(401).json({ mensagem: "Usuário não encontrado" });
         }
 
         const user = result.rows[0];
         const senhaValida = await bcrypt.compare(senha, user.senha);
 
         if (!senhaValida) {
-            return res.status(401).json({ message: "Senha errada" });
+            return res.status(401).json({ mensagem: "Senha errada" });
         }
 
         const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: "1h" });
-        res.json({ token, nome: user.usuario });
+        res.json({
+            mensagem: "Login realizado",
+            token,
+            nome: user.usuario
+        });
     } catch (err) {
         console.error("ERRO LOGIN:", err);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ mensagem: "Erro no servidor" });
     }
 });
 
 app.post("/cadastro", async (req, res) => {
     console.log("Recebi cadastro:", req.body);
     const { nome, usuario, email, senha } = req.body;
-    if (!usuario || !email || !senha) {
-        return res.status(400).json({ message: "Preencha todos os campos" });
+    if (!usuario ||!email ||!senha) {
+        return res.status(400).json({ mensagem: "Preencha todos os campos" });
     }
 
     try {
-        // Confere se usuário/email já existe
         const existe = await pool.query(
             "SELECT * FROM usuarios WHERE email = $1 OR usuario = $2",
             [email, usuario]
         );
 
         if (existe.rows.length > 0) {
-            return res.status(400).json({ message: "Usuário ou email já cadastrado" });
+            return res.status(400).json({ mensagem: "Usuário ou email já cadastrado" });
         }
 
-        // Criptografa senha
         const senhaHash = await bcrypt.hash(senha, 10);
 
-        // Insere no banco
         await pool.query(
             "INSERT INTO usuarios (usuario, email, senha) VALUES ($1, $2, $3)",
             [usuario, email, senhaHash]
         );
 
-        res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
+        res.status(201).json({ mensagem: "Usuário cadastrado com sucesso!" });
     } catch (err) {
         console.error("ERRO CADASTRO:", err);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ mensagem: "Erro no servidor" });
     }
 });
 
-// Middleware JWT
-function authMiddleware(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-
-    if (!token) return res.status(401).json({ message: "Token não enviado" });
-
-    jwt.verify(token, SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: "Token inválido" });
-        req.user = user;
-        next();
-    });
-}
-
-// Rota protegida
-app.get("/dashboard", authMiddleware, async (req, res) => {
-    try {
-        const result = await pool.query("SELECT usuario FROM usuarios WHERE id = $1", [req.user.id]);
-        res.json({ usuario: result.rows[0].usuario });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
-// ROTA PÚBLICA - LISTAR FILMES
 app.get("/filmes", async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM filmes ORDER BY id DESC");
         res.json(result.rows);
     } catch (erro) {
         console.error('ERRO FILMES:', erro);
-        res.status(500).json({ message: "Erro ao buscar filmes" });
+        res.status(500).json({ mensagem: "Erro ao buscar filmes" });
     }
 });
 
