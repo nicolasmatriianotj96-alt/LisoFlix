@@ -1,9 +1,11 @@
+const API_URL = 'https://lisoflix-g5ie.onrender.com';
+
 async function login() {
-    const usuario = document.getElementById('usuario').value.trim();
+    const email = document.getElementById('usuario').value.trim();
     const senha = document.getElementById('senha').value;
     const msg = document.getElementById('mensagem');
 
-    if (!usuario ||!senha) {
+    if (!email ||!senha) {
         msg.textContent = "Preencha email e senha";
         msg.style.color = "red";
         return;
@@ -13,10 +15,10 @@ async function login() {
     msg.style.color = "white";
 
     try {
-        const res = await fetch('https://lisoflix-g5ie.onrender.com/login', {
+        const res = await fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ usuario, senha }) // usuario = email
+            body: JSON.stringify({ email, senha })
         });
 
         const data = await res.json();
@@ -26,12 +28,11 @@ async function login() {
             localStorage.setItem("nome", data.nome);
             msg.textContent = "Login ok! Redirecionando...";
             msg.style.color = "#46d369";
-
             setTimeout(() => {
-                window.location.href = 'dashboard.html'; // tua área logada
+                window.location.href = 'dashboard.html';
             }, 1000);
         } else {
-            msg.textContent = data.message;
+            msg.textContent = data.mensagem;
             msg.style.color = "red";
         }
     } catch (err) {

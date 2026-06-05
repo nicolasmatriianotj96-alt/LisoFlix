@@ -17,12 +17,12 @@ window.onload = async function() {
         console.log("Tentando buscar filmes em:", `${API_URL}/filmes`); // DEBUG
         
         const res = await fetch(`${API_URL}/filmes`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-                // /filmes é público, não precisa Authorization
-            }
-        });
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+    }
+});
 
         console.log("Status da resposta:", res.status); // DEBUG
 
