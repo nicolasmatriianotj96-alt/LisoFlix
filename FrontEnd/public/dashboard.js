@@ -72,10 +72,11 @@ function logout() {
 }
 
 function abrirTrailer(urlYoutube) {
-    // YouTube normal: watch?v=ABC123
-    // YouTube embed: embed/ABC123 +?hl=pt para PT-BR
-    const videoId = urlYoutube.split('v=')[1];
-    const urlEmbed = `https://www.youtube.com/embed/${videoId}?hl=pt&autoplay=1`;
+    // Pega só o ID do vídeo mesmo se URL for youtu.be/ABC123
+    const videoId = urlYoutube.split(/v=|\/be\//)[1].split('&')[0];
+    const urlEmbed = `https://www.youtube.com/embed/${videoId}?hl=pt&autoplay=1&rel=0`;
+
+    console.log('Abrindo trailer:', urlEmbed); // pra debugar no F12
 
     document.getElementById('modal').style.display = 'flex';
     document.getElementById('player').src = urlEmbed;
