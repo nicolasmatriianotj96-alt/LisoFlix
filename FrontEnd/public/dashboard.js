@@ -51,7 +51,7 @@ window.onload = async function() {
                 <div class="card">
                     <img src="${filme.url_imagem}" alt="${filme.titulo}">
                     <h3>${filme.titulo}</h3>
-                    <button class="registrar" onclick="window.open('${filme.url_trailer}', '_blank')">Assistir</button>
+                    <button class="registrar" onclick="abrirTrailer('${filme.url_trailer}')">Assistir</button>
                 </div>
             `;
         });
@@ -69,4 +69,19 @@ function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('nome');
     window.location.href = 'index.html';
+}
+
+function abrirTrailer(urlYoutube) {
+    // YouTube normal: watch?v=ABC123
+    // YouTube embed: embed/ABC123 +?hl=pt para PT-BR
+    const videoId = urlYoutube.split('v=')[1];
+    const urlEmbed = `https://www.youtube.com/embed/${videoId}?hl=pt&autoplay=1`;
+
+    document.getElementById('modal').style.display = 'flex';
+    document.getElementById('player').src = urlEmbed;
+}
+
+function fecharTrailer() {
+    document.getElementById('modal').style.display = 'none';
+    document.getElementById('player').src = ''; // para o vídeo
 }
