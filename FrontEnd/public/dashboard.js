@@ -14,35 +14,27 @@ window.onload = async function() {
     boasvindas.textContent = `Olá, ${nome}!`;
 
     try {
-        const res = await fetch(`${API_URL}/filmes`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-        if (!res.ok) {
-            throw new Error(`Erro HTTP ${res.status}`);
-        }
-
+        const res = await fetch(`${API_URL}/filmes`);
         let filmes = await res.json();
         
-        // Se não tiver filmes ou faltar imagem, usa fallback
+        // URLs do TMDB que funcionam sem baixar
         const filmesFallback = [
             {
                 id: 1,
                 titulo: 'A Origem',
-                url_imagem: 'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg'
+                url_imagem: 'https://image.tmdb.org/t/p/w500/edv5CZvsDJNuEwwkgmAXJffDglZ.jpg'
             },
             {
                 id: 2,
                 titulo: 'Alice no País das Maravilhas',
-                url_imagem: 'https://m.media-amazon.com/images/MV5BMTY3OTI5NDczNV5BMl5BanBnXkFtZTcwNDUxNzU1OQ@@._V1_.jpg'
+                url_imagem: 'https://image.tmdb.org/t/p/w500/6XTb2QZBz5LVE5hKzrvUF6XOs7s.jpg'
             }
         ];
 
         if (filmes.length === 0) {
             filmes = filmesFallback;
         } else {
-            // Preenche imagem faltando
+            // Se faltar imagem, preenche com fallback
             filmes = filmes.map((f, i) => ({
                 ...f,
                 url_imagem: f.url_imagem || filmesFallback[i % 2].url_imagem
@@ -55,7 +47,7 @@ window.onload = async function() {
         filmes.forEach(filme => {
             catalogo.innerHTML += `
                 <div class="card">
-                    <img src="${filme.url_imagem}" alt="${filme.titulo}" onerror="this.src='https://via.placeholder.com/180x260?text=Sem+Imagem'">
+                    <img src="${filme.url_imagem}" alt="${filme.titulo}" onerror="this.src='https://via.placeholder.com/180x270?text=${encodeURIComponent(filme.titulo)}'">
                     <h3>${filme.titulo}</h3>
                     <button class="registrar">Assistir</button>
                 </div>
@@ -68,7 +60,6 @@ window.onload = async function() {
         console.error("ERRO COMPLETO:", err);
         msg.textContent = "Erro: " + err.message;
         msg.style.color = "red";
-        boasvindas.textContent = "Falha ao carregar";
     }
 }
 

@@ -37,7 +37,7 @@ body {
     z-index: 2;
     margin: auto;
     width: 90%;
-    max-width: 1200px; /* aumentei pra caber mais cards */
+    max-width: 400px; /* VOLTOU AO NORMAL pra login/registro */
     background: rgba(0,0,0,0.75);
     padding: 40px;
     border-radius: 10px;
@@ -45,6 +45,11 @@ body {
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+
+/* Só dashboard fica largo */
+body:has(#catalogo) .login-container {
+    max-width: 1200px;
 }
 
 .login-container button {
@@ -59,12 +64,12 @@ body {
 
 .login-container input {
     width: 100%;
-    height: 35px;
-    padding: 20px;
-    font-size: 18px;
+    height: 45px; /* era 35px + padding 20px = 75px, gigante */
+    padding: 0 15px;
+    font-size: 16px;
     border: none;
     border-radius: 8px;
-    background: rgba(255,255,255,0);
+    background: rgba(255,255,255,0.1);
     color: white;
 }
 
@@ -125,6 +130,7 @@ a {
     height: 270px !important;
     object-fit: cover !important;
     display: block !important;
+    background: #222 !important;
 }
 
 .card h3 {
@@ -178,4 +184,3 @@ html, body {
     margin: 0 !important;
     padding: 0 !important;
 }
-
