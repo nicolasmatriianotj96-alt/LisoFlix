@@ -17,24 +17,24 @@ window.onload = async function() {
         const res = await fetch(`${API_URL}/filmes`);
         let filmes = await res.json();
         
-        // URLs do TMDB que funcionam sem baixar
+        // Fallback com tuas imagens locais
         const filmesFallback = [
             {
                 id: 1,
                 titulo: 'A Origem',
-                url_imagem: 'https://image.tmdb.org/t/p/w500/edv5CZvsDJNuEwwkgmAXJffDglZ.jpg'
+                url_imagem: './imagens/origem.jpg'  // usa a imagem que tu baixou
             },
             {
                 id: 2,
                 titulo: 'Alice no País das Maravilhas',
-                url_imagem: 'https://image.tmdb.org/t/p/w500/6XTb2QZBz5LVE5hKzrvUF6XOs7s.jpg'
+                url_imagem: './imagens/alice.jpg'   // usa a imagem que tu baixou
             }
         ];
 
         if (filmes.length === 0) {
             filmes = filmesFallback;
         } else {
-            // Se faltar imagem, preenche com fallback
+            // Se algum filme do banco não tiver imagem, usa local
             filmes = filmes.map((f, i) => ({
                 ...f,
                 url_imagem: f.url_imagem || filmesFallback[i % 2].url_imagem
@@ -47,7 +47,7 @@ window.onload = async function() {
         filmes.forEach(filme => {
             catalogo.innerHTML += `
                 <div class="card">
-                    <img src="${filme.url_imagem}" alt="${filme.titulo}" onerror="this.src='https://via.placeholder.com/180x270?text=${encodeURIComponent(filme.titulo)}'">
+                    <img src="${filme.url_imagem}" alt="${filme.titulo}" onerror="this.src='https://via.placeholder.com/180x270?text=Sem+Imagem'">
                     <h3>${filme.titulo}</h3>
                     <button class="registrar">Assistir</button>
                 </div>
