@@ -5,10 +5,7 @@ window.onload = async function() {
     const boasvindas = document.getElementById('boasvindas');
     const msg = document.getElementById('mensagem');
 
-    console.log("Token no localStorage:", token);
-
     if (!token) {
-        console.log("Sem token, voltando pro login");
         window.location.href = 'index.html';
         return;
     }
@@ -17,8 +14,6 @@ window.onload = async function() {
     boasvindas.textContent = `Olá, ${nome}!`;
 
     try {
-        console.log("Tentando buscar filmes em:", `${API_URL}/filmes`);
-
         const res = await fetch(`${API_URL}/filmes`, {
             method: 'GET',
             headers: {
@@ -26,15 +21,11 @@ window.onload = async function() {
             }
         });
 
-        console.log("Status da resposta:", res.status);
-
         if (!res.ok) {
             throw new Error(`Erro HTTP ${res.status}`);
         }
 
         const filmes = await res.json();
-        console.log("Filmes recebidos:", filmes);
-
         const catalogo = document.getElementById('catalogo');
         catalogo.innerHTML = '';
 

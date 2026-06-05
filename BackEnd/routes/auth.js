@@ -39,15 +39,21 @@ router.post("/register", async (req, res) => {
     }
 });
 
-// LOGIN - CORRIGIDO: agora retorna nome
+// LOGIN - CORRIGIDO: aceita email OU usuario
 router.post("/login", async (req, res) => {
-    const { email, senha } = req.body;
-    console.log('Login:', email);
+    const { email, senha, usuario } = req.body;
+    const login = email || usuario;
+    
+    console.log('Login tentado:', login);
+
+    if (!login || !senha) {
+        return res.status(400).json({ mensagem: "Preencha email/usuário e senha" });
+    }
 
     try {
         const result = await db.query(
-            "SELECT * FROM usuarios WHERE email = $1",
-            [email]
+            "SELECT * FROM usuarios WHERE email = $1 OR usuario = $1",
+            [login]
         );
 
         if (result.rows.length === 0) {
@@ -80,7 +86,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-// LISTAR FILMES - continua público como estava
+// LISTAR FILMES
 router.get("/filmes", async (req, res) => {
     try {
         const result = await db.query("SELECT * FROM filmes");

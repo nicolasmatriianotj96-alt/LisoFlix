@@ -1,12 +1,12 @@
 const API_URL = 'https://lisoflix-g5ie.onrender.com';
 
 async function login() {
-    const email = document.getElementById('usuario').value.trim();
+    const login = document.getElementById('usuario').value.trim();
     const senha = document.getElementById('senha').value;
     const msg = document.getElementById('mensagem');
 
-    if (!email ||!senha) {
-        msg.textContent = "Preencha email e senha";
+    if (!login ||!senha) {
+        msg.textContent = "Preencha email/usuário e senha";
         msg.style.color = "red";
         return;
     }
@@ -18,10 +18,11 @@ async function login() {
         const res = await fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, senha })
+            body: JSON.stringify({ usuario: login, email: login, senha })
         });
 
         const data = await res.json();
+        console.log('Resposta:', data);
 
         if (res.ok) {
             localStorage.setItem("token", data.token);
