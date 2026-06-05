@@ -1,13 +1,9 @@
-const form = document.getElementById('form-login');
-const msg = document.getElementById('mensagem');
-
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const email = document.getElementById('email').value.trim();
+async function login() {
+    const usuario = document.getElementById('usuario').value.trim();
     const senha = document.getElementById('senha').value;
+    const msg = document.getElementById('mensagem');
 
-    if (!email || !senha) {
+    if (!usuario ||!senha) {
         msg.textContent = "Preencha email e senha";
         msg.style.color = "red";
         return;
@@ -20,7 +16,7 @@ form.addEventListener('submit', async (e) => {
         const res = await fetch('https://lisoflix-g5ie.onrender.com/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, senha })
+            body: JSON.stringify({ usuario, senha }) // usuario = email
         });
 
         const data = await res.json();
@@ -32,10 +28,10 @@ form.addEventListener('submit', async (e) => {
             msg.style.color = "#46d369";
 
             setTimeout(() => {
-                window.location.href = 'dashboard.html';
+                window.location.href = 'dashboard.html'; // tua área logada
             }, 1000);
         } else {
-            msg.textContent = data.mensagem;
+            msg.textContent = data.message;
             msg.style.color = "red";
         }
     } catch (err) {
@@ -43,4 +39,4 @@ form.addEventListener('submit', async (e) => {
         msg.style.color = "red";
         console.error(err);
     }
-});
+}
