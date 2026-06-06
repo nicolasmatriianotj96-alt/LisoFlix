@@ -41,7 +41,7 @@ async function registrar() {
         });
 
         const data = await res.json();
-        msg.textContent = data.messagem;
+        msg.textContent = data.mensagem;
         msg.style.color = res.ok ? '#46d369' : 'red';
 
         if (res.ok) {
