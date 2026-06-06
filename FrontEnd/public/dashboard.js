@@ -19,21 +19,19 @@ window.onload = async function() {
         
         // Tuas imagens locais
         const filmesLocais = [
-            {
-                id: 9991,
-                titulo: 'A Origem',
-                url_imagem: '/imagens/origem.jpg',
-                url_trailer: 'https://youtube.com/watch?v=YoHD9XEInc0'
-                
-            },
-            {
-                id: 9992,
-                titulo: 'Alice no País das Maravilhas',
-                url_imagem: '/imagens/alice.jpg'
-                
-
-            }
-        ];
+    {
+        id: 9991,
+        titulo: 'A Origem',
+        url_imagem: '/imagens/origem.jpg',
+        url_trailer: 'https://youtube.com/watch?v=YoHD9XEInc0'
+    },
+    {
+        id: 9992,
+        titulo: 'Alice no País das Maravilhas',
+        url_imagem: '/imagens/alice.jpg',
+        url_trailer: 'https://youtube.com/watch?v=9XEuoFwr24Y' // Trailer oficial dublado
+    }
+];
 
         // Se banco vazio, usa só os locais
         if (filmes.length === 0) {
