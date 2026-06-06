@@ -14,38 +14,53 @@ window.onload = async function() {
     boasvindas.textContent = `Olá, ${nome}!`;
 
     try {
-        const token = localStorage.getItem('token'); // pega o token de novo aqui
+        // Removi o const token duplicado daqui
+        const res = await fetch(`${API_URL}/filmes`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
 
-const res = await fetch(`${API_URL}/filmes`, {
-    headers: { 'Authorization': `Bearer ${token}` }
-});
+        console.log("Status /filmes:", res.status); // Log pra debugar
+
+        if (!res.ok) {
+            msg.textContent = `Erro ${res.status}: Faça login de novo`;
+            msg.style.color = "red";
+            localStorage.clear();
+            setTimeout(() => window.location.href = 'index.html', 2000);
+            return;
+        }
+
         let filmes = await res.json();
-        
+        console.log("Filmes recebidos:", filmes);
+
         // Tuas imagens locais
         const filmesLocais = [
-    {
-        id: 9991,
-        titulo: 'A Origem',
-        url_imagem: '/imagens/origem.jpg',
-        url_trailer: 'https://youtube.com/watch?v=YoHD9XEInc0'
-    },
-    {
-        id: 9992,
-        titulo: 'Alice no País das Maravilhas',
-        url_imagem: '/imagens/alice.jpg',
-        url_trailer: 'https://youtube.com/watch?v=9XEuoFwr24Y' // Trailer oficial dublado
-    }
-];
+            {
+                id: 9991,
+                titulo: 'A Origem',
+                url_imagem: '/imagens/origem.jpg',
+                url_trailer: 'https://youtube.com/watch?v=YoHD9XEInc0'
+            },
+            {
+                id: 9992,
+                titulo: 'Alice no País das Maravilhas',
+                url_imagem: '/imagens/alice.jpg',
+                url_trailer: 'https://youtube.com/watch?v=9XEuoFwr24Y'
+            }
+        ];
 
         // Se banco vazio, usa só os locais
         if (filmes.length === 0) {
             filmes = filmesLocais;
         } else {
             // Substitui os 2 primeiros do banco pelos locais
-            filmes.splice(0, 2, ...filmesLocais);
+            filmes.splice(0, 2,...filmesLocais);
         }
 
         const catalogo = document.getElementById('catalogo');
+        if (!catalogo) {
+            console.error("Erro: div #catalogo não encontrada no HTML");
+            return;
+        }
         catalogo.innerHTML = '';
 
         filmes.forEach(filme => {

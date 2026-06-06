@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const bcrypt = require('bcryptjs'); // mantive bcryptjs como estava
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Pool } = require('pg');
 
@@ -20,6 +20,22 @@ const pool = new Pool({
 });
 
 const SECRET = process.env.JWT_SECRET || 'chave_teste_123';
+
+// Middleware pra proteger rotas
+function auth(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) return res.status(401).json({ mensagem: "Acesso negado. Faça login" });
+
+    try {
+        const user = jwt.verify(token, SECRET);
+        req.user = user;
+        next();
+    } catch {
+        res.status(403).json({ mensagem: "Token inválido" });
+    }
+}
 
 app.get("/", (req, res) => res.send("API OK"));
 
@@ -63,19 +79,21 @@ app.post("/login", async (req, res) => {
 
 app.post("/cadastro", async (req, res) => {
     console.log("Recebi cadastro:", req.body);
-    const { nome, usuario, email, senha } = req.body;
+    const { usuario, email, senha } = req.body;
+
     if (!usuario ||!email ||!senha) {
         return res.status(400).json({ mensagem: "Preencha todos os campos" });
     }
 
-     if (senha.length < 8) {
+    if (senha.length < 8) {
         return res.status(400).json({ mensagem: "Senha precisa ter mínimo 8 caracteres" });
-     }
+    }
 
-     if (!email.includes('@') || !email.includes('.')) {
-    return res.status(400).json({ mensagem: "Email inválido. Use formato: nome@email.com" });
-}
-}
+    if (!email.includes('@') ||!email.includes('.')) {
+        return res.status(400).json({ mensagem: "Email inválido. Use formato: nome@email.com" });
+    }
+
+    // Tirei a } extra que tava aqui
 
     try {
         const existe = await pool.query(
@@ -99,11 +117,12 @@ app.post("/cadastro", async (req, res) => {
         console.error("ERRO CADASTRO:", err);
         res.status(500).json({ mensagem: "Erro no servidor" });
     }
-});
+}); // fecha aqui certinho
 
-app.get("/filmes", async (req, res) => {
+app.get("/filmes", auth, async (req, res) => { // adicionei auth
     try {
         const result = await pool.query("SELECT id, titulo, url_imagem, url_trailer FROM filmes ORDER BY id DESC");
+        res.json(result.rows); // faltava essa linha
     } catch (erro) {
         console.error('ERRO FILMES:', erro);
         res.status(500).json({ mensagem: "Erro ao buscar filmes" });
