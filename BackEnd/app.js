@@ -89,9 +89,10 @@ app.post("/cadastro", async (req, res) => {
         return res.status(400).json({ mensagem: "Senha precisa ter mínimo 8 caracteres" });
     }
 
-    if (!email.includes('@') ||!email.includes('.')) {
-        return res.status(400).json({ mensagem: "Email inválido. Use formato: nome@email.com" });
-    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (!emailRegex.test(email)) {
+    return res.status(400).json({ mensagem: "Email inválido. Use: nome@email.com" });
+}
 
     // Tirei a } extra que tava aqui
 
