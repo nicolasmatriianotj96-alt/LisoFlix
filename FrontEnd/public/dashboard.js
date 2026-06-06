@@ -14,7 +14,11 @@ window.onload = async function() {
     boasvindas.textContent = `Olá, ${nome}!`;
 
     try {
-        const res = await fetch(`${API_URL}/filmes`);
+        const token = localStorage.getItem('token'); // pega o token de novo aqui
+
+const res = await fetch(`${API_URL}/filmes`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+});
         let filmes = await res.json();
         
         // Tuas imagens locais
