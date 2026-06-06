@@ -68,6 +68,14 @@ app.post("/cadastro", async (req, res) => {
         return res.status(400).json({ mensagem: "Preencha todos os campos" });
     }
 
+     if (senha.length < 8) {
+        return res.status(400).json({ mensagem: "Senha precisa ter mínimo 8 caracteres" });
+     }
+
+     if (!email.includes('@') || !email.includes('.')) {
+    return res.status(400).json({ mensagem: "Email inválido" });
+}
+
     try {
         const existe = await pool.query(
             "SELECT * FROM usuarios WHERE email = $1 OR usuario = $2",
