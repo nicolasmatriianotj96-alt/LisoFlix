@@ -130,5 +130,47 @@ app.get("/filmes", auth, async (req, res) => { // adicionei auth
     }
 });
 
+// Buscar dados do usuário logado
+app.get("/usuario", auth, async (req, res) => {
+    try {
+        const result = await pool.query(
+            "SELECT id, usuario, email FROM usuarios WHERE id = $1",
+            [req.user.id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ mensagem: "Usuário não encontrado" });
+        }
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error("ERRO USUARIO:", err);
+        res.status(500).json({ mensagem: "Erro no servidor" });
+    }
+});
+
+// Atualizar dados do usuário
+app.put("/usuario", auth, async (req, res) => {
+    const { usuario, email } = req.body;
+
+    if (!usuario ||!email) {
+        return res.status(400).json({ mensagem: "Preencha todos os campos" });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ mensagem: "Email inválido" });
+    }
+
+    try {
+        await pool.query(
+            "UPDATE usuarios SET usuario = $1, email = $2 WHERE id = $3",
+            [usuario, email, req.user.id]
+        );
+        res.json({ mensagem: "Perfil atualizado com sucesso" });
+    } catch (err) {
+        console.error("ERRO UPDATE:", err);
+        res.status(500).json({ mensagem: "Erro ao atualizar" });
+    }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`));
