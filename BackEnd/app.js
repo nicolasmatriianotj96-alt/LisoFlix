@@ -4,20 +4,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { Pool } = require("pg");
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
 
 const app = express();
 
-// Cria pasta uploads se não existir
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)){
-    fs.mkdirSync(uploadDir);
-}
-
 app.use(express.json());
 
-// CORS - já com PUT liberado
+// CORS
 app.use(cors({
     origin: 'https://liso-flix.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -25,9 +17,6 @@ app.use(cors({
     credentials: true
 }));
 app.options('*', cors());
-
-// Serve arquivos da pasta uploads
-app.use('/uploads', express.static(uploadDir));
 
 // Configuração do banco
 const pool = new Pool({
@@ -52,19 +41,11 @@ function auth(req, res, next) {
     }
 }
 
-// Config multer - onde salva e nome do arquivo
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/')
-    },
-    filename: function (req, file, cb) {
-        const uniqueName = req.user.id + '-' + Date.now() + path.extname(file.originalname);
-        cb(null, uniqueName);
-    }
-});
+// Multer em memória - não salva arquivo no disco
+const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 2 * 1024 * 1024 }, // max 2MB
+    limits: { fileSize: 2 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
         if (file.mimetype.startsWith('image/')) {
             cb(null, true);
@@ -147,16 +128,19 @@ app.put("/usuario", auth, async (req, res) => {
     }
 });
 
-// ROTA UPLOAD FOTO - NOVA
+// ROTA UPLOAD FOTO - VERSÃO BASE64 FUNCIONA NO RENDER
 app.post("/upload-foto", auth, upload.single('foto'), async (req, res) => {
     if (!req.file) return res.status(400).json({ mensagem: "Nenhuma foto enviada" });
 
-    const fotoUrl = `https://lisoflix-g5ie.onrender.com/uploads/${req.file.filename}`;
-
     try {
+        const base64 = req.file.buffer.toString('base64');
+        const mimeType = req.file.mimetype;
+        const fotoUrl = `data:${mimeType};base64,${base64}`;
+
         await pool.query("UPDATE usuarios SET foto_url = $1 WHERE id = $2", [fotoUrl, req.user.id]);
         res.json({ mensagem: "Foto atualizada", foto_url: fotoUrl });
     } catch (err) {
+        console.error("ERRO UPLOAD:", err);
         res.status(500).json({ mensagem: "Erro ao salvar foto" });
     }
 });
