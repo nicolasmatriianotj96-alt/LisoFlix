@@ -24,18 +24,22 @@
     <div id="modal" onclick="if(event.target.id==='modal') fecharTrailer()" ...
 
 <!-- Modal do Trailer -->
-<div id="modal" onclick="if(event.target.id==='modal') fecharTrailer()" 
+<div id="modalTrailer" onclick="fecharTrailer(event)" 
      style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
-     background:rgba(0,0,0,0.9); z-index:9999;">
+            background:rgba(0,0,0,0.9); z-index:9999;">
 
-    <button onclick="fecharTrailer()" style="position:absolute; top:20px; right:30px; font-size:40px; color:white; background:none; border:none; cursor:pointer; z-index:10000;">×</button>
+    <button onclick="fecharTrailer(event)" 
+            style="position:absolute; top:20px; right:30px; font-size:40px; 
+                   color:white; background:none; border:none; cursor:pointer; z-index:10000;">×</button>
     
-    <iframe id="player" 
+    <iframe id="playerTrailer" 
             style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); 
-            width:90vw; height:50.6vw; max-width:1280px; max-height:720px; border:none;"
+                   width:90%; height:80%; max-width:1280px; max-height:720px; 
+                   border:none;" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
             allowfullscreen></iframe>
 </div>
-    <script src="dashboard.js"></script>
+
+<script src="dashboard.js"></script>
 </body>
 </html>

@@ -72,18 +72,16 @@ function logout() {
 }
 
 function abrirTrailer(urlYoutube) {
-    // Pega só o ID do vídeo mesmo se URL for youtu.be/ABC123
     const videoId = urlYoutube.split(/v=|\/be\//)[1].split('&')[0];
     const urlEmbed = `https://www.youtube.com/embed/${videoId}?hl=pt&cc_lang_pref=pt&cc_load_policy=1&autoplay=1&rel=0`;
 
-    console.log('Abrindo trailer:', urlEmbed); // pra debugar no F12
-    alert(urlEmbed);
-
-    document.getElementById('modal').style.display = 'flex';
-    document.getElementById('player').src = urlEmbed;
+    document.getElementById('modalTrailer').style.display = 'block';
+    document.getElementById('playerTrailer').src = urlEmbed;
 }
 
-function fecharTrailer() {
-    document.getElementById('modal').style.display = 'none';
-    document.getElementById('player').src = ''; // para o vídeo
+function fecharTrailer(e) {
+    if(e.target.id === 'modalTrailer' || e.target.tagName === 'BUTTON') {
+        document.getElementById('playerTrailer').src = '';
+        document.getElementById('modalTrailer').style.display = 'none';
+    }
 }
