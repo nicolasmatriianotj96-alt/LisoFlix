@@ -5,128 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Perfil - LisoFlix</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #141414;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-       .perfil-container {
-            background: #181818;
-            padding: 40px;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 400px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-       .foto-perfil {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: #333;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-            overflow: hidden;
-        }
-       .foto-perfil img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            background: #333;
-            border: none;
-            border-radius: 4px;
-            color: #fff;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #e50914;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        button:hover {
-            background: #f40612;
-        }
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-       .msg {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-       .voltar {
-            background: #555;
-            margin-top: 5px;
-        }
-       .voltar:hover {
-            background: #666;
-        }
-
-        /* MOBILE RESPONSIVO */
-@media (max-width: 768px) {
-   .perfil-container, .login-container {
-        padding: 20px;
-        margin: 20px;
-    }
-    
-    .foto-perfil {
-        width: 80px;
-        height: 80px;
-        font-size: 35px;
-    }
-    
-    h1 {
-        font-size: 24px;
-    }
-    
-    .card {
-        width: 100%;
-        max-width: 300px;
-        margin: 10px auto;
-    }
-    
-    #catalogo {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    #catalogo {
-        grid-template-columns: 1fr;
-    }
-}
+        body { font-family: Arial; background: #141414; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+      .perfil-container { background: #181818; padding: 40px; border-radius: 8px; width: 100%; max-width: 400px; }
+        h1 { text-align: center; margin-bottom: 30px; }
+      .foto-perfil { width: 120px; height: 120px; border-radius: 50%; background: #333; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 50px; overflow: hidden; cursor: pointer; border: 3px solid #e50914; }
+      .foto-perfil img { width: 100%; height: 100%; object-fit: cover; }
+      .foto-perfil:hover { opacity: 0.8; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #333; border: none; border-radius: 4px; color: #fff; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #e50914; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background: #f40612; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+      .msg { text-align: center; margin-top: 15px; font-size: 14px; }
+      .voltar { background: #555; margin-top: 5px; }
+      .voltar:hover { background: #666; }
+        #inputFoto { display: none; }
     </style>
 </head>
 <body>
     <div class="perfil-container">
         <h1>Meu Perfil</h1>
 
-        <div class="foto-perfil" id="fotoDiv">
+        <div class="foto-perfil" id="fotoDiv" onclick="document.getElementById('inputFoto').click()">
             👤
         </div>
+        <input type="file" id="inputFoto" accept="image/*">
 
         <input type="text" id="usuario" placeholder="Usuário" required>
         <input type="email" id="email" placeholder="Email" required>
@@ -141,39 +43,60 @@
         const API_URL = 'https://lisoflix-g5ie.onrender.com';
         const token = localStorage.getItem('token');
 
-        if (!token) {
-            window.location.href = 'index.html';
-        }
+        if (!token) window.location.href = 'index.html';
 
-        // Carrega dados do usuário ao abrir a página
         window.onload = async function() {
             try {
                 const res = await fetch(`${API_URL}/usuario`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-
                 if (!res.ok) {
-                    alert('Sessão expirada');
                     localStorage.clear();
                     window.location.href = 'index.html';
                     return;
                 }
-
                 const user = await res.json();
                 document.getElementById('usuario').value = user.usuario;
                 document.getElementById('email').value = user.email;
-
-                // Se tiver foto no futuro, mostra aqui
                 if (user.foto_url) {
                     document.getElementById('fotoDiv').innerHTML = `<img src="${user.foto_url}">`;
                 }
-
             } catch (err) {
-                console.error(err);
                 document.getElementById('msg').textContent = 'Erro ao carregar perfil';
                 document.getElementById('msg').style.color = 'red';
             }
         }
+
+        // Upload de foto
+        document.getElementById('inputFoto').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Foto muito grande. Máximo 2MB');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('foto', file);
+
+            try {
+                const res = await fetch(`${API_URL}/upload-foto`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    document.getElementById('fotoDiv').innerHTML = `<img src="${data.foto_url}">`;
+                    document.getElementById('msg').textContent = 'Foto atualizada!';
+                    document.getElementById('msg').style.color = 'lightgreen';
+                } else {
+                    alert(data.mensagem);
+                }
+            } catch (err) {
+                alert('Erro ao enviar foto');
+            }
+        });
 
         async function salvarPerfil() {
             const btn = document.getElementById('btnSalvar');
@@ -194,13 +117,11 @@
                     },
                     body: JSON.stringify({ usuario, email })
                 });
-
                 const data = await res.json();
-
                 if (res.ok) {
                     msg.textContent = 'Perfil atualizado!';
                     msg.style.color = 'lightgreen';
-                    localStorage.setItem('nome', usuario); // atualiza nome no localStorage
+                    localStorage.setItem('nome', usuario);
                 } else {
                     msg.textContent = data.mensagem;
                     msg.style.color = 'red';
@@ -209,7 +130,6 @@
                 msg.textContent = 'Erro ao salvar';
                 msg.style.color = 'red';
             }
-
             btn.disabled = false;
             btn.textContent = 'Salvar Alterações';
         }
