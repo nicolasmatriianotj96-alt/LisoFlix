@@ -8,7 +8,7 @@ const app = express();
 
 app.use(cors({
     origin: 'https://liso-flix.vercel.app',
-    methods: ['GET', 'POST', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'OPTIONS'], // adicionei PUT aqui
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
