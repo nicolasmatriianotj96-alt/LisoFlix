@@ -148,7 +148,9 @@ app.get("/usuario", auth, async (req, res) => {
 });
 
 // Atualizar dados do usuário
+// Atualizar dados do usuário
 app.put("/usuario", auth, async (req, res) => {
+    console.log("Recebi PUT /usuario:", req.body, "User ID:", req.user.id);
     const { usuario, email } = req.body;
 
     if (!usuario ||!email) {
@@ -161,6 +163,24 @@ app.put("/usuario", auth, async (req, res) => {
     }
 
     try {
+        // Verifica se email já existe em OUTRO usuário
+        const existe = await pool.query(
+            "SELECT id FROM usuarios WHERE email = $1 AND id != $2",
+            [email, req.user.id]
+        );
+        if (existe.rows.length > 0) {
+            return res.status(400).json({ mensagem: "Este email já está em uso" });
+        }
+
+        // Verifica se usuário já existe em OUTRO usuário
+        const existeUser = await pool.query(
+            "SELECT id FROM usuarios WHERE usuario = $1 AND id != $2",
+            [usuario, req.user.id]
+        );
+        if (existeUser.rows.length > 0) {
+            return res.status(400).json({ mensagem: "Este usuário já está em uso" });
+        }
+
         await pool.query(
             "UPDATE usuarios SET usuario = $1, email = $2 WHERE id = $3",
             [usuario, email, req.user.id]
@@ -171,6 +191,7 @@ app.put("/usuario", auth, async (req, res) => {
         res.status(500).json({ mensagem: "Erro ao atualizar" });
     }
 });
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`));

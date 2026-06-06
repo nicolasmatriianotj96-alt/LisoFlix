@@ -83,6 +83,41 @@
        .voltar:hover {
             background: #666;
         }
+
+        /* MOBILE RESPONSIVO */
+@media (max-width: 768px) {
+   .perfil-container, .login-container {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    .foto-perfil {
+        width: 80px;
+        height: 80px;
+        font-size: 35px;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+    
+    .card {
+        width: 100%;
+        max-width: 300px;
+        margin: 10px auto;
+    }
+    
+    #catalogo {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    #catalogo {
+        grid-template-columns: 1fr;
+    }
+}
     </style>
 </head>
 <body>
