@@ -94,8 +94,7 @@ app.post("/cadastro", async (req, res) => {
 
 app.get("/filmes", async (req, res) => {
     try {
-        const result = await pool.query("SELECT * FROM filmes ORDER BY id DESC");
-        res.json(result.rows);
+        const result = await pool.query("SELECT id, titulo, url_imagem, url_trailer FROM filmes ORDER BY id DESC");
     } catch (erro) {
         console.error('ERRO FILMES:', erro);
         res.status(500).json({ mensagem: "Erro ao buscar filmes" });

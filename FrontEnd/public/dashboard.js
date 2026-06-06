@@ -49,7 +49,7 @@ window.onload = async function() {
                 <div class="card">
                     <img src="${filme.url_imagem}" alt="${filme.titulo}">
                     <h3>${filme.titulo}</h3>
-                    <button class="registrar" onclick="abrirTrailer('${filme.url_trailer}')">Assistir</button>
+                    <button class="registrar" onclick="abrirTrailer('${filme.url_trailer || ''}')" ${!filme.url_trailer ? 'disabled style="opacity:0.5"' : ''}>Assistir</button>
                 </div>
             `;
         });
