@@ -73,7 +73,8 @@ app.post("/cadastro", async (req, res) => {
      }
 
      if (!email.includes('@') || !email.includes('.')) {
-    return res.status(400).json({ mensagem: "Email inválido" });
+    return res.status(400).json({ mensagem: "Email inválido. Use formato: nome@email.com" });
+}
 }
 
     try {
