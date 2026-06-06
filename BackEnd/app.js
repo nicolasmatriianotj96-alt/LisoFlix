@@ -146,6 +146,7 @@ app.post("/upload-foto", auth, upload.single('foto'), async (req, res) => {
 });
 
 // ROTA FILMES
+// ROTA FILMES - pública, catálogo não precisa login
 app.get("/filmes", async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM filmes ORDER BY id DESC");
