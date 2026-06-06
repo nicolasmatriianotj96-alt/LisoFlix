@@ -6,13 +6,17 @@ const { Pool } = require('pg');
 
 const app = express();
 
+app.use(express.json());
+
+
 app.use(cors({
     origin: 'https://liso-flix.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'OPTIONS'], // adicionei PUT aqui
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json());
+app.options('*', cors());
+
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
