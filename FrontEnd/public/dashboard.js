@@ -217,3 +217,53 @@ function filtrarFilmes() {
         card.style.display = titulo.includes(termo) ? 'block' : 'none';
     });
 }
+
+function abrirPerfil() {
+    document.getElementById('novoNome').value = localStorage.getItem('nome');
+    document.getElementById('modalPerfil').style.display = 'flex';
+}
+
+function fecharPerfil(e) {
+    if(e.target.id === 'modalPerfil' || e.target.tagName === 'BUTTON') {
+        document.getElementById('modalPerfil').style.display = 'none';
+        document.getElementById('msgPerfil').textContent = '';
+    }
+}
+
+async function salvarPerfil() {
+    const token = localStorage.getItem('token');
+    const nome = document.getElementById('novoNome').value;
+    const senha = document.getElementById('novaSenha').value;
+    const msg = document.getElementById('msgPerfil');
+
+    if (!nome) {
+        msg.textContent = 'Digite um nome';
+        msg.style.color = 'red';
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/perfil`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ nome, senha })
+        });
+
+        if (res.ok) {
+            localStorage.setItem('nome', nome);
+            document.getElementById('boasvindas').textContent = `Olá, ${nome}!`;
+            msg.textContent = 'Perfil atualizado!';
+            msg.style.color = '#46d369';
+            setTimeout(() => fecharPerfil({target: document.getElementById('modalPerfil')}), 1500);
+        } else {
+            msg.textContent = 'Erro ao atualizar';
+            msg.style.color = 'red';
+        }
+    } catch (err) {
+        msg.textContent = 'Erro: ' + err.message;
+        msg.style.color = 'red';
+    }
+}
