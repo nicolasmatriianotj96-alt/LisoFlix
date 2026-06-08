@@ -15,9 +15,8 @@ window.onload = async function() {
 
     try {
         // Removi o const token duplicado daqui
-        const res = await fetch(`${API_URL}/filmes`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_URL}/filmes`);         
+        
 
         console.log("Status /filmes:", res.status); // Log pra debugar
 
@@ -64,15 +63,17 @@ window.onload = async function() {
         catalogo.innerHTML = '';
 
         filmes.forEach(filme => {
-            catalogo.innerHTML += `
-                <div class="card">
-                    <img src="${filme.url_imagem}" alt="${filme.titulo}">
-                    <h3>${filme.titulo}</h3>
-                    <button class="registrar" onclick="abrirTrailer('${filme.url_trailer || ''}')" ${!filme.url_trailer ? 'disabled style="opacity:0.5"' : ''}>Assistir</button>
-                </div>
-            `;
-        });
-
+    const img = filme.url_imagem || filme.imagem_url;
+    const trailer = filme.url_trailer;
+    
+    catalogo.innerHTML += `
+        <div class="card">
+            <img src="${img}" alt="${filme.titulo}">
+            <h3>${filme.titulo}</h3>
+            <button class="registrar" onclick="abrirTrailer('${trailer || ''}')" ${!trailer ? 'disabled style="opacity:0.5"' : ''}>Assistir</button>
+        </div>
+    `;
+});
         msg.textContent = "";
 
     } catch (err) {
