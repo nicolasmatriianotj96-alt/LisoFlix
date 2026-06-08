@@ -47,7 +47,7 @@ html, body {
     gap: 15px;
 }
 
-.login-container h1,.login-container h3 {
+.login-container h1, .login-container h3 {
     text-align: center;
     margin-bottom: 20px;
 }
@@ -106,7 +106,7 @@ html, body {
 }
 
 /* DASHBOARD LARGO */
-body:has(.catalogo).login-container {
+.login-container:has(#catalogo) {
     max-width: 1200px;
 }
 
@@ -118,15 +118,15 @@ body:has(.catalogo).login-container {
     flex-wrap: wrap;
 }
 
-.header-dashboard.registrar {
+.header-dashboard .registrar {
     flex: 1 1 auto;
     min-width: 110px;
 }
 
-.header-dashboard.registrar:last-child {
+.header-dashboard .registrar:last-child {
     background: #333;
 }
-.header-dashboard.registrar:last-child:hover {
+.header-dashboard .registrar:last-child:hover {
     background: #555;
 }
 
@@ -146,11 +146,11 @@ body:has(.catalogo).login-container {
     border-color: #e50914;
 }
 
-/* CATÁLOGO */
+/* CATÁLOGO - CARDS MENORES LADO A LADO */
 .catalogo {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
     margin-top: 30px;
     width: 100%;
 }
@@ -159,58 +159,68 @@ body:has(.catalogo).login-container {
     display: flex;
     flex-direction: column;
     background: #1a1a1a;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
     transition: all 0.3s;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
 .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 16px rgba(229,9,20,0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(229,9,20,0.4);
 }
 
 .card img {
     width: 100%;
-    height: 320px;
+    height: 220px;
     object-fit: cover;
     display: block;
 }
 
 .card h3 {
-    padding: 12px;
-    font-size: 16px;
+    padding: 8px;
+    font-size: 14px;
     margin: 0;
     flex: 1;
+    text-align: center;
 }
 
 .card-botoes {
     display: flex;
-    gap: 10px;
-    padding: 10px;
+    gap: 6px;
+    padding: 8px;
 }
 
-.card-botoes.registrar {
+.card-botoes .registrar {
     flex: 1;
-    height: 40px;
-    font-size: 14px;
+    height: 32px;
+    font-size: 12px;
     font-weight: bold;
+    padding: 0 5px;
 }
 
-/* MOBILE */
+/* MOBILE - 3 COLUNAS */
 @media (max-width: 768px) {
-   .login-container {
+    .login-container {
         padding: 25px;
         max-width: 95%;
     }
-   .catalogo {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+    .catalogo {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
     }
-   .card img {
-        height: 240px;
+    .card img {
+        height: 180px;
     }
-   .header-dashboard.registrar {
+    .card h3 {
+        font-size: 12px;
+        padding: 6px;
+    }
+    .card-botoes .registrar {
+        height: 28px;
+        font-size: 11px;
+    }
+    .header-dashboard .registrar {
         flex: 1 1 48%;
         min-width: unset;
         font-size: 13px;
@@ -218,11 +228,15 @@ body:has(.catalogo).login-container {
     }
 }
 
+/* MOBILE PEQUENO - 2 COLUNAS */
 @media (max-width: 480px) {
-   .login-container {
+    .login-container {
         padding: 20px;
     }
-   .card img {
-        height: 220px;
+    .catalogo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .card img {
+        height: 160px;
     }
 }
