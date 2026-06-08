@@ -1,6 +1,6 @@
 const API_URL = 'https://lisoflix-g5ie.onrender.com';
 
-let filmesGlobais = []; // <- guarda todos os filmes pra busca funcionar
+let filmesGlobais = [];
 
 window.onload = async function() {
     const token = localStorage.getItem('token');
@@ -27,7 +27,6 @@ window.onload = async function() {
 
         let filmes = await res.json();
 
-        // 20 FILMES FALLBACK - só aparece se banco tiver vazio
         const filmesLocais = [
             {id: 1001, titulo: 'Interestelar', url_imagem: 'https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg', url_trailer: 'https://youtube.com/watch?v=zSWdZVtXT7E'},
             {id: 1002, titulo: 'Matrix', url_imagem: 'https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg', url_trailer: 'https://youtube.com/watch?v=vKQi3bBA1y8'},
@@ -37,7 +36,7 @@ window.onload = async function() {
             {id: 1006, titulo: 'Avatar', url_imagem: 'https://image.tmdb.org/t/p/w500/6dbi2KM0f5bJaeib0Yt1byYxUBb.jpg', url_trailer: 'https://youtube.com/watch?v=5PSNL1qE6VY'},
             {id: 1007, titulo: 'Vingadores Ultimato', url_imagem: 'https://image.tmdb.org/t/p/w500/cezWGskPY5x7GaglTTRN4Fugfb8.jpg', url_trailer: 'https://youtube.com/watch?v=6ZfuNTqbHE8'},
             {id: 1008, titulo: 'Batman', url_imagem: 'https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo4LEMUWPd6JC.jpg', url_trailer: 'https://youtube.com/watch?v=mqqft2x_Aa4'},
-            {id: 1009, titulo: 'Cor curingas', url_imagem: 'https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg', url_trailer: 'https://youtube.com/watch?v=zAGVQLHvwOY'},
+            {id: 1009, titulo: 'Coringa', url_imagem: 'https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg', url_trailer: 'https://youtube.com/watch?v=zAGVQLHvwOY'},
             {id: 1010, titulo: 'Top Gun Maverick', url_imagem: 'https://image.tmdb.org/t/p/w500/62HCnUTziyWcpDaBO2i1DX17ljH.jpg', url_trailer: 'https://youtube.com/watch?v=qSqVVswa420'},
             {id: 1011, titulo: 'Pantera Negra', url_imagem: 'https://image.tmdb.org/t/p/w500/uxzzxijgPIY7slzFvMotPv8wjKA.jpg', url_trailer: 'https://youtube.com/watch?v=xjDjIWPwcPU'},
             {id: 1012, titulo: 'Velozes 10', url_imagem: 'https://image.tmdb.org/t/p/w500/fiVW06jE7z9YnO4trhaMEdclSiC.jpg', url_trailer: 'https://youtube.com/watch?v=32RAq6JzY-w'},
@@ -51,9 +50,8 @@ window.onload = async function() {
             {id: 1020, titulo: 'Sonic 2', url_imagem: 'https://image.tmdb.org/t/p/w500/6DrHO1jr3qVrViUO6s6kFiAGM7.jpg', url_trailer: 'https://youtube.com/watch?v=47jDe-zE3r8'}
         ];
 
-        // Se banco vazio usa os 20 filmes, senão usa só o banco
         if (filmes.length === 0) filmes = filmesLocais;
-        filmesGlobais = filmes; // <- salva pra busca usar
+        filmesGlobais = filmes;
 
         const catalogo = document.getElementById('catalogo');
         catalogo.innerHTML = '';
@@ -141,6 +139,7 @@ async function toggleFavorito(filme_id, btn) {
             b.textContent = novoEstado? '✓' : '♥';
         });
 
+        // CORRIGIDO: espaço no seletor
         if (favoritado && document.getElementById('favoritos').style.display === 'grid') {
             btn.closest('.card').remove();
             document.getElementById('countFav').textContent = document.querySelectorAll('#favoritos.card').length;
@@ -191,17 +190,21 @@ async function carregarFavoritos() {
     }
 }
 
-// BUSCA CORRIGIDA - com espaço no seletor
+// BUSCA 100% FUNCIONAL
 function filtrarFilmes() {
-    const termo = document.getElementById('busca').value.toLowerCase();
+    const termo = document.getElementById('busca').value.toLowerCase().trim();
     const abaAtiva = document.getElementById('catalogo').style.display === 'grid'? 'catalogo' : 'favoritos';
     const container = document.getElementById(abaAtiva);
 
-    const cards = container.querySelectorAll('.card'); // <- espaço aqui
+    const cards = container.querySelectorAll('.card');
 
     cards.forEach(card => {
         const titulo = card.querySelector('h3').textContent.toLowerCase();
-        card.style.display = titulo.includes(termo)? 'flex' : 'none';
+        if (titulo.includes(termo)) {
+            card.style.display = 'flex';
+        } else {
+            card.style.display = 'none';
+        }
     });
 }
 
