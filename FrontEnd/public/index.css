@@ -196,3 +196,53 @@ body:has(.catalogo) .login-container {
     outline: none;
     border-color: #e50914;
 }
+
+/* HEADER DO DASHBOARD - SUBSTITUI O ANTIGO */
+.header-dashboard {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* quebra linha no mobile */
+}
+
+.header-dashboard .registrar {
+    flex: 1 1 auto; /* cresce mas respeita tamanho mínimo */
+    min-width: 120px;
+    height: 42px;
+    font-size: 14px;
+    padding: 0 10px;
+    white-space: nowrap; /* não quebra texto */
+}
+
+/* Botão Sair mais escuro */
+.header-dashboard .registrar:last-child {
+    background: #333;
+}
+
+.header-dashboard .registrar:last-child:hover {
+    background: #555;
+}
+
+/* MOBILE - força 2 linhas de 2 botões */
+@media (max-width: 768px) {
+    .header-dashboard .registrar {
+        flex: 1 1 48%; /* 2 por linha */
+        min-width: unset;
+        font-size: 13px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 20px;
+        max-width: 95%;
+    }
+    .catalogo {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .card img {
+        height: 220px;
+    }
+}
