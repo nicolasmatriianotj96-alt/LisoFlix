@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LisoFlix - Dashboard</title>
+    <link rel="stylesheet" href="index.css">
+</head>
 <body>
     <div class="background">
         <div class="overlay"></div>
@@ -5,18 +13,17 @@
             <h1 id="boasvindas">Carregando...</h1>
             <p id="mensagem"></p>
 
-            <!-- HEADER NOVO COM SAIR -->
-            <div style="display:flex; gap:10px; margin-bottom:20px;">
+            <!-- HEADER COM SAIR -->
+            <div class="header-dashboard">
                 <button id="btnCatalogo" class="registrar" onclick="mostrarAba('catalogo')" style="flex:2;">Catálogo</button>
                 <button id="btnFavoritos" class="registrar" onclick="mostrarAba('favoritos')" style="flex:2;">♥ Meus Favoritos <span id="countFav">0</span></button>
                 <button class="registrar" onclick="logout()" style="flex:1; background:#333;">Sair</button>
             </div>
 
             <!-- BUSCA -->
-            <input type="text" id="busca" placeholder="Buscar filmes..." onkeyup="filtrarFilmes()" 
-                   style="width:100%; padding:12px; margin-bottom:20px; border-radius:8px; border:1px solid #333; background:#1a1a1a; color:white; font-size:16px;">
+            <input type="text" id="busca" placeholder="Buscar filmes..." onkeyup="filtrarFilmes()">
 
-            <!-- IMPORTANTE: adiciona os ids aqui -->
+            <!-- CATÁLOGO E FAVORITOS -->
             <div id="catalogo" class="catalogo" style="display:grid;"></div>
             <div id="favoritos" class="catalogo" style="display:none;"></div>
         </div>
@@ -26,9 +33,10 @@
     <div id="modalTrailer" onclick="fecharTrailer(event)" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999; justify-content:center; align-items:center;">
         <div style="position:relative; width:90%; max-width:800px;">
             <button onclick="fecharTrailer(event)" style="position:absolute; top:-40px; right:0; background:red; color:white; border:none; padding:10px 15px; border-radius:50%; font-size:20px; cursor:pointer;">X</button>
-            <iframe id="playerTrailer" width="100%" height="450" frameborder="0" allow="autoplay"></iframe>
+            <iframe id="playerTrailer" width="100%" height="450" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
     </div>
 
     <script src="dashboard.js"></script>
 </body>
+</html>
