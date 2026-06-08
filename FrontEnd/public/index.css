@@ -63,24 +63,8 @@ html, body {
     color: white;
 }
 
-/* Botões gerais só pro login/registro */
-.login-container > button {
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background: red;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.login-container > button:hover {
-    background: #cc0000;
-}
-
 .registrar {
-    height: 45px;
+    height: 42px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,30 +72,57 @@ html, body {
     border-radius: 8px;
     background: red;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
     transition: 0.3s;
-    padding: 0 15px;
+    padding: 0 12px;
+    white-space: nowrap;
 }
 
 .registrar:hover {
     background: #cc0000;
 }
 
-a {
-    text-decoration: none;
-}
-
-/* DASHBOARD - só fica largo se tiver .catalogo */
+/* DASHBOARD LARGO */
 body:has(.catalogo) .login-container {
     max-width: 1200px;
 }
 
-/* HEADER DO DASHBOARD */
+/* HEADER ÚNICO */
 .header-dashboard {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.header-dashboard .registrar {
+    flex: 1 1 auto;
+    min-width: 110px;
+}
+
+/* Botão Sair */
+.header-dashboard .registrar:last-child {
+    background: #333;
+}
+.header-dashboard .registrar:last-child:hover {
+    background: #555;
+}
+
+/* BUSCA */
+#busca {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    color: white;
+    font-size: 16px;
+}
+#busca:focus {
+    outline: none;
+    border-color: #e50914;
 }
 
 /* CATÁLOGO */
@@ -159,7 +170,7 @@ body:has(.catalogo) .login-container {
     font-size: 14px;
 }
 
-/* MOBILE - só 1 media query */
+/* MOBILE */
 @media (max-width: 768px) {
     .login-container {
         padding: 25px;
@@ -172,61 +183,8 @@ body:has(.catalogo) .login-container {
     .card img {
         height: 240px;
     }
-    .header-dashboard {
-        flex-direction: column;
-    }
-    .registrar {
-        font-size: 14px;
-        height: 40px;
-    }
-}
-
-#busca {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    border: 1px solid #333;
-    background: #1a1a1a;
-    color: white;
-    font-size: 16px;
-}
-
-#busca:focus {
-    outline: none;
-    border-color: #e50914;
-}
-
-/* HEADER DO DASHBOARD - SUBSTITUI O ANTIGO */
-.header-dashboard {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    flex-wrap: wrap; /* quebra linha no mobile */
-}
-
-.header-dashboard .registrar {
-    flex: 1 1 auto; /* cresce mas respeita tamanho mínimo */
-    min-width: 120px;
-    height: 42px;
-    font-size: 14px;
-    padding: 0 10px;
-    white-space: nowrap; /* não quebra texto */
-}
-
-/* Botão Sair mais escuro */
-.header-dashboard .registrar:last-child {
-    background: #333;
-}
-
-.header-dashboard .registrar:last-child:hover {
-    background: #555;
-}
-
-/* MOBILE - força 2 linhas de 2 botões */
-@media (max-width: 768px) {
     .header-dashboard .registrar {
-        flex: 1 1 48%; /* 2 por linha */
+        flex: 1 1 48%;
         min-width: unset;
         font-size: 13px;
         height: 40px;
@@ -236,11 +194,6 @@ body:has(.catalogo) .login-container {
 @media (max-width: 480px) {
     .login-container {
         padding: 20px;
-        max-width: 95%;
-    }
-    .catalogo {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
     }
     .card img {
         height: 220px;
