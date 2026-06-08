@@ -1,57 +1,134 @@
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body {
-  min-height: 100vh;
-  background: #0f0f0f;
+html, body {
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    background: black;
+    overflow-x: hidden;
+    color: white;
 }
 
 .background {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  display: flex; /* <- o flex tem que estar aqui */
-  justify-content: center;
-  align-items: center;
-  background-image: url('./imagens/planoDeFundo.jpg');
-  background-size: cover;
-  background-position: center;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex; /* centraliza aqui */
+    justify-content: center;
+    align-items: center;
+    background-image: url('./imagens/planoDeFundo.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.65);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.65);
 }
 
 .login-container {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 380px;
-  background: rgba(0,0,0,0.75);
-  padding: 40px 30px;
-  border-radius: 12px;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 400px;
+    background: rgba(0,0,0,0.75);
+    padding: 40px;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-container h1, .login-container h3 {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .login-container input {
-  width: 100%;
-  padding: 12px 15px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.1);
-  color: white;
-  box-sizing: border-box;
+    width: 100%;
+    height: 45px;
+    padding: 0 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.login-container button {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: red;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-container button:hover {
+    background: #cc0000;
+}
+
+.registrar {
+    width: 100%;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 8px;
+    background: red;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.registrar:hover {
+    background: #cc0000;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* DASHBOARD - só fica largo se tiver #catalogo */
+body:has(.catalogo) .login-container {
+    max-width: 1200px;
+}
+
+.catalogo {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.card img {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+    display: block;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 25px;
+        max-width: 95%;
+    }
+    .catalogo {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
 }
