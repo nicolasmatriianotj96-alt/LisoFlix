@@ -155,5 +155,32 @@ app.get("/filmes", async (req, res) => {
     }
 });
 
+// POST favoritar
+app.post("/favoritar", auth, async (req, res) => {
+    const { filme_id } = req.body;
+    try {
+        await pool.query(
+            "INSERT INTO favoritos (usuario_id, filme_id) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+            [req.user.id, filme_id]
+        );
+        res.json({ mensagem: "Favoritado!" });
+    } catch (err) {
+        res.status(500).json({ mensagem: "Erro ao favoritar" });
+    }
+});
+
+// DELETE desfavoritar
+app.delete("/favoritar/:filme_id", auth, async (req, res) => {
+    try {
+        await pool.query(
+            "DELETE FROM favoritos WHERE usuario_id = $1 AND filme_id = $2",
+            [req.user.id, req.params.filme_id]
+        );
+        res.json({ mensagem: "Removido dos favoritos" });
+    } catch (err) {
+        res.status(500).json({ mensagem: "Erro ao remover" });
+    }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

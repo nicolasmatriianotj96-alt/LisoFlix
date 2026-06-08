@@ -14,11 +14,8 @@ window.onload = async function() {
     boasvindas.textContent = `Olá, ${nome}!`;
 
     try {
-        // Removi o const token duplicado daqui
-        const res = await fetch(`${API_URL}/filmes`);         
-        
-
-        console.log("Status /filmes:", res.status); // Log pra debugar
+        const res = await fetch(`${API_URL}/filmes`);
+        console.log("Status /filmes:", res.status);
 
         if (!res.ok) {
             msg.textContent = `Erro ${res.status}: Faça login de novo`;
@@ -31,7 +28,6 @@ window.onload = async function() {
         let filmes = await res.json();
         console.log("Filmes recebidos:", filmes);
 
-        // Tuas imagens locais
         const filmesLocais = [
             {
                 id: 9991,
@@ -47,11 +43,9 @@ window.onload = async function() {
             }
         ];
 
-        // Se banco vazio, usa só os locais
         if (filmes.length === 0) {
             filmes = filmesLocais;
         } else {
-            // Substitui os 2 primeiros do banco pelos locais
             filmes.splice(0, 2,...filmesLocais);
         }
 
@@ -63,17 +57,22 @@ window.onload = async function() {
         catalogo.innerHTML = '';
 
         filmes.forEach(filme => {
-    const img = filme.url_imagem || filme.imagem_url;
-    const trailer = filme.url_trailer;
-    
-    catalogo.innerHTML += `
-        <div class="card">
-            <img src="${img}" alt="${filme.titulo}">
-            <h3>${filme.titulo}</h3>
-            <button class="registrar" onclick="abrirTrailer('${trailer || ''}')" ${!trailer ? 'disabled style="opacity:0.5"' : ''}>Assistir</button>
-        </div>
-    `;
-});
+            const img = filme.url_imagem || filme.imagem_url;
+            const trailer = filme.url_trailer;
+            const isLocal = filme.id > 9990; // filmes locais não salvam favorito
+
+            catalogo.innerHTML += `
+                <div class="card">
+                    <img src="${img}" alt="${filme.titulo}">
+                    <h3>${filme.titulo}</h3>
+                    <div style="display:flex; gap:10px; padding:10px;">
+                        <button class="registrar" onclick="abrirTrailer('${trailer || ''}')" ${!trailer? 'disabled style="opacity:0.5"' : ''}>Assistir</button>
+                        ${!isLocal? `<button class="registrar" onclick="toggleFavorito(${filme.id}, this)" style="background:#e50914;">♥</button>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+
         msg.textContent = "";
 
     } catch (err) {
@@ -90,6 +89,7 @@ function logout() {
 }
 
 function abrirTrailer(urlYoutube) {
+    if (!urlYoutube) return;
     const videoId = urlYoutube.split(/v=|\/be\//)[1].split('&')[0];
     const urlEmbed = `https://www.youtube.com/embed/${videoId}?hl=pt&cc_lang_pref=pt&cc_load_policy=1&autoplay=1&rel=0`;
 
@@ -101,5 +101,29 @@ function fecharTrailer(e) {
     if(e.target.id === 'modalTrailer' || e.target.tagName === 'BUTTON') {
         document.getElementById('playerTrailer').src = '';
         document.getElementById('modalTrailer').style.display = 'none';
+    }
+}
+
+async function toggleFavorito(filme_id, btn) {
+    const token = localStorage.getItem('token');
+    const favoritado = btn.dataset.fav === 'true';
+
+    try {
+        const res = await fetch(`${API_URL}/favoritar${favoritado? '/' + filme_id : ''}`, {
+            method: favoritado? 'DELETE' : 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: favoritado? null : JSON.stringify({ filme_id })
+        });
+
+        const data = await res.json();
+        btn.dataset.fav =!favoritado;
+        btn.style.background = favoritado? '#e50914' : '#46d369';
+        btn.textContent = favoritado? '♥' : '✓';
+
+    } catch (err) {
+        console.error(err);
     }
 }
