@@ -1,5 +1,7 @@
 const API_URL = 'https://lisoflix-g5ie.onrender.com';
 
+let filmesGlobais = []; // <- guarda todos os filmes pra busca funcionar
+
 window.onload = async function() {
     const token = localStorage.getItem('token');
     const boasvindas = document.getElementById('boasvindas');
@@ -51,6 +53,7 @@ window.onload = async function() {
 
         // Se banco vazio usa os 20 filmes, senão usa só o banco
         if (filmes.length === 0) filmes = filmesLocais;
+        filmesGlobais = filmes; // <- salva pra busca usar
 
         const catalogo = document.getElementById('catalogo');
         catalogo.innerHTML = '';
@@ -188,10 +191,15 @@ async function carregarFavoritos() {
     }
 }
 
+// BUSCA CORRIGIDA - com espaço no seletor
 function filtrarFilmes() {
     const termo = document.getElementById('busca').value.toLowerCase();
     const abaAtiva = document.getElementById('catalogo').style.display === 'grid'? 'catalogo' : 'favoritos';
-    document.querySelectorAll(`#${abaAtiva}.card`).forEach(card => {
+    const container = document.getElementById(abaAtiva);
+
+    const cards = container.querySelectorAll('.card'); // <- espaço aqui
+
+    cards.forEach(card => {
         const titulo = card.querySelector('h3').textContent.toLowerCase();
         card.style.display = titulo.includes(termo)? 'flex' : 'none';
     });
