@@ -271,3 +271,20 @@ body {
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
+
+.container-login {
+  width: 100%;
+  max-width: 380px;
+  padding: 40px 30px;
+  background: #1a1a1a;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.container-login input {
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+}
