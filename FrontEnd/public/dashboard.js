@@ -72,6 +72,24 @@ window.onload = async function() {
                 </div>
             `;
         });
+
+        // Carrega quais filmes já são favoritos pra marcar os botões
+        const resFav = await fetch(`${API_URL}/favoritos`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const favs = await resFav.json();
+        const idsFavoritos = favs.map(f => f.id);
+
+        document.querySelectorAll('#catalogo button[onclick*="toggleFavorito"]').forEach(btn => {
+            const match = btn.getAttribute('onclick').match(/toggleFavorito\((\d+),/);
+            const id = match? Number(match[1]) : null;
+            if (id && idsFavoritos.includes(id)) {
+                btn.dataset.fav = 'true';
+                btn.style.background = '#46d369';
+                btn.textContent = '✓';
+            }
+        });
+
         msg.textContent = "";
 
     } catch (err) {
@@ -117,15 +135,22 @@ async function toggleFavorito(filme_id, btn) {
             body: favoritado? null : JSON.stringify({ filme_id })
         });
 
+        const novoEstado =!favoritado;
+
+        // Atualiza TODOS os botões desse filme_id no Catálogo e Favoritos
+        document.querySelectorAll(`button[onclick*="toggleFavorito(${filme_id},"]`).forEach(b => {
+            b.dataset.fav = novoEstado;
+            b.style.background = novoEstado? '#46d369' : '#e50914';
+            b.textContent = novoEstado? '✓' : '♥';
+        });
+
         // Se tá na aba favoritos e desmarcou, remove o card da tela
         if (favoritado && document.getElementById('favoritos').style.display === 'grid') {
             btn.closest('.card').remove();
+            document.getElementById('countFav').textContent = document.querySelectorAll('#favoritos.card').length;
         }
 
-        const data = await res.json();
-        btn.dataset.fav =!favoritado;
-        btn.style.background = favoritado? '#e50914' : '#46d369';
-        btn.textContent = favoritado? '♥' : '✓';
+        await res.json();
 
     } catch (err) {
         console.error(err);
