@@ -57,22 +57,21 @@ window.onload = async function() {
         catalogo.innerHTML = '';
 
         filmes.forEach(filme => {
-            const img = filme.url_imagem || filme.imagem_url;
-            const trailer = filme.url_trailer;
-            const isLocal = filme.id > 9990; // filmes locais não salvam favorito
+    const img = filme.url_imagem || filme.imagem_url;
+    const trailer = filme.url_trailer;
+    const isLocal = filme.id === 9991 || filme.id === 9992;
 
-            catalogo.innerHTML += `
-                <div class="card">
-                    <img src="${img}" alt="${filme.titulo}">
-                    <h3>${filme.titulo}</h3>
-                    <div style="display:flex; gap:10px; padding:10px;">
-                        <button class="registrar" onclick="abrirTrailer('${trailer || ''}')" ${!trailer? 'disabled style="opacity:0.5"' : ''}>Assistir</button>
-                        ${!isLocal? `<button class="registrar" onclick="toggleFavorito(${filme.id}, this)" style="background:#e50914;">♥</button>` : ''}
-                    </div>
-                </div>
-            `;
-        });
-
+    catalogo.innerHTML += `
+        <div class="card">
+            <img src="${img}" alt="${filme.titulo}">
+            <h3>${filme.titulo}</h3>
+            <div style="display:flex; gap:10px; padding:10px;">
+                <button class="registrar" onclick="abrirTrailer('${trailer || ''}')" ${!trailer? 'disabled style="opacity:0.5"' : ''}>Assistir</button>
+                ${!isLocal? `<button class="registrar" onclick="toggleFavorito(${filme.id}, this)" style="background:#e50914;">♥</button>` : ''}
+            </div>
+        </div>
+    `;
+});
         msg.textContent = "";
 
     } catch (err) {
