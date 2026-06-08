@@ -16,7 +16,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
-app.options('*', cors());
+
 
 // Configuração do banco
 const pool = new Pool({
