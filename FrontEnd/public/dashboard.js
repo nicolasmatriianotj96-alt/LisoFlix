@@ -24,13 +24,33 @@ window.onload = async function() {
         }
 
         let filmes = await res.json();
+
+        // 20 FILMES FALLBACK - só aparece se banco tiver vazio
         const filmesLocais = [
-            {id: 9991, titulo: 'A Origem', url_imagem: '/imagens/origem.jpg', url_trailer: 'https://youtube.com/watch?v=YoHD9XEInc0'},
-            {id: 9992, titulo: 'Alice no País das Maravilhas', url_imagem: '/imagens/alice.jpg', url_trailer: 'https://youtube.com/watch?v=9XEuoFwr24Y'}
+            {id: 1001, titulo: 'Interestelar', url_imagem: 'https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg', url_trailer: 'https://youtube.com/watch?v=zSWdZVtXT7E'},
+            {id: 1002, titulo: 'Matrix', url_imagem: 'https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg', url_trailer: 'https://youtube.com/watch?v=vKQi3bBA1y8'},
+            {id: 1003, titulo: 'Oppenheimer', url_imagem: 'https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg', url_trailer: 'https://youtube.com/watch?v=8CUaIPGEQXs'},
+            {id: 1004, titulo: 'Barbie', url_imagem: 'https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg', url_trailer: 'https://youtube.com/watch?v=8zIf0XvoL9Y'},
+            {id: 1005, titulo: 'Duna', url_imagem: 'https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg', url_trailer: 'https://youtube.com/watch?v=8g18jFHCLXk'},
+            {id: 1006, titulo: 'Avatar', url_imagem: 'https://image.tmdb.org/t/p/w500/6dbi2KM0f5bJaeib0Yt1byYxUBb.jpg', url_trailer: 'https://youtube.com/watch?v=5PSNL1qE6VY'},
+            {id: 1007, titulo: 'Vingadores Ultimato', url_imagem: 'https://image.tmdb.org/t/p/w500/cezWGskPY5x7GaglTTRN4Fugfb8.jpg', url_trailer: 'https://youtube.com/watch?v=6ZfuNTqbHE8'},
+            {id: 1008, titulo: 'Batman', url_imagem: 'https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo4LEMUWPd6JC.jpg', url_trailer: 'https://youtube.com/watch?v=mqqft2x_Aa4'},
+            {id: 1009, titulo: 'Cor curingas', url_imagem: 'https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg', url_trailer: 'https://youtube.com/watch?v=zAGVQLHvwOY'},
+            {id: 1010, titulo: 'Top Gun Maverick', url_imagem: 'https://image.tmdb.org/t/p/w500/62HCnUTziyWcpDaBO2i1DX17ljH.jpg', url_trailer: 'https://youtube.com/watch?v=qSqVVswa420'},
+            {id: 1011, titulo: 'Pantera Negra', url_imagem: 'https://image.tmdb.org/t/p/w500/uxzzxijgPIY7slzFvMotPv8wjKA.jpg', url_trailer: 'https://youtube.com/watch?v=xjDjIWPwcPU'},
+            {id: 1012, titulo: 'Velozes 10', url_imagem: 'https://image.tmdb.org/t/p/w500/fiVW06jE7z9YnO4trhaMEdclSiC.jpg', url_trailer: 'https://youtube.com/watch?v=32RAq6JzY-w'},
+            {id: 1013, titulo: 'Guardiões 3', url_imagem: 'https://image.tmdb.org/t/p/w500/r2J02Z2OpNTctfOSN1Ydgp55fU9.jpg', url_trailer: 'https://youtube.com/watch?v=u3V5KDhphxg'},
+            {id: 1014, titulo: 'Missão Impossível 7', url_imagem: 'https://image.tmdb.org/t/p/w500/NNxYkU70HPurnNCSiCjYAmacwm.jpg', url_trailer: 'https://youtube.com/watch?v=avz06PDqDbM'},
+            {id: 1015, titulo: 'Elementos', url_imagem: 'https://image.tmdb.org/t/p/w500/8riWcADI1ekEiBguVB9vkilhiQm.jpg', url_trailer: 'https://youtube.com/watch?v=hXzcyx9V0xw'},
+            {id: 1016, titulo: 'Homem-Aranha', url_imagem: 'https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg', url_trailer: 'https://youtube.com/watch?v=cqGjhVJWtEA'},
+            {id: 1017, titulo: 'John Wick 4', url_imagem: 'https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF4WHa09iI.jpg', url_trailer: 'https://youtube.com/watch?v=qEVUtrk8_B4'},
+            {id: 1018, titulo: 'Transformers', url_imagem: 'https://image.tmdb.org/t/p/w500/gJE2z3YPiqgAmEJ36nRaLSWBqsl.jpg', url_trailer: 'https://youtube.com/watch?v=itnqE3MrrRA'},
+            {id: 1019, titulo: 'Indiana Jones 5', url_imagem: 'https://image.tmdb.org/t/p/w500/Af4bXE63pVsb2FtbW8uYIyPBadD.jpg', url_trailer: 'https://youtube.com/watch?v=eQwpfVWEy1M'},
+            {id: 1020, titulo: 'Sonic 2', url_imagem: 'https://image.tmdb.org/t/p/w500/6DrHO1jr3qVrViUO6s6kFiAGM7.jpg', url_trailer: 'https://youtube.com/watch?v=47jDe-zE3r8'}
         ];
 
+        // Se banco vazio usa os 20 filmes, senão usa só o banco
         if (filmes.length === 0) filmes = filmesLocais;
-        else filmes.splice(0, 2,...filmesLocais);
 
         const catalogo = document.getElementById('catalogo');
         catalogo.innerHTML = '';
@@ -38,7 +58,7 @@ window.onload = async function() {
         filmes.forEach(filme => {
             const img = filme.url_imagem || filme.imagem_url;
             const trailer = filme.url_trailer;
-            const isLocal = filme.id === 9991 || filme.id === 9992;
+            const isLocal = filme.id >= 1001 && filme.id <= 1020;
 
             catalogo.innerHTML += `
                 <div class="card">
