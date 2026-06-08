@@ -20,6 +20,9 @@
     <button onclick="mostrarAba('favoritos')" id="btnFavoritos" style="padding:10px 20px; background:#333; border:none; color:white; cursor:pointer; border-radius:0 5px 5px 0;">♥ Meus Favoritos<span id="countFav">0</span></button>
 </div>
 
+<input type="text" id="busca" placeholder="Buscar filmes..." onkeyup="filtrarFilmes()" 
+       style="width:100%; max-width:400px; padding:12px; margin:20px 0; border-radius:8px; border:1px solid #333; background:#1a1a1a; color:white; font-size:16px;">
+
 <div class="catalogo" id="catalogo"></div>
 <div class="catalogo" id="favoritos" style="display:none;"></div>
 

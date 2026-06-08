@@ -206,3 +206,14 @@ async function carregarFavoritos() {
         container.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:red;">Erro ao carregar favoritos</p>';
     }
 }
+
+function filtrarFilmes() {
+    const termo = document.getElementById('busca').value.toLowerCase();
+    const abaAtiva = document.getElementById('catalogo').style.display === 'grid' ? 'catalogo' : 'favoritos';
+    const cards = document.querySelectorAll(`#${abaAtiva} .card`);
+    
+    cards.forEach(card => {
+        const titulo = card.querySelector('h3').textContent.toLowerCase();
+        card.style.display = titulo.includes(termo) ? 'block' : 'none';
+    });
+}

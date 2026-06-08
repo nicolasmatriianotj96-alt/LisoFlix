@@ -16,7 +16,7 @@ html, body {
     position: relative;
     width: 100%;
     min-height: 100vh;
-    display: flex; /* centraliza aqui */
+    display: flex;
     justify-content: center;
     align-items: center;
     background-image: url('./imagens/planoDeFundo.jpg');
@@ -106,70 +106,18 @@ body:has(.catalogo) .login-container {
     max-width: 1200px;
 }
 
-.catalogo {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 25px;
-    margin-top: 30px;
-    width: 100%;
-}
-
-.card img {
-    width: 100%;
-    height: 270px;
-    object-fit: cover;
-    display: block;
-}
-
-/* MOBILE */
-@media (max-width: 480px) {
-    .login-container {
-        padding: 25px;
-        max-width: 95%;
-    }
-    .catalogo {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-}
-
-.catalogo {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-}
-
-.card {
-    background: #181818;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.3s;
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-.card img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-}
-
-.card h3 {
-    padding: 10px;
-    font-size: 16px;
-}
-
+/* CATÁLOGO - versão final única */
 .catalogo {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 25px;
     margin-top: 30px;
+    width: 100%;
 }
 
 .card {
+    display: flex;
+    flex-direction: column;
     background: #1a1a1a;
     border-radius: 12px;
     overflow: hidden;
@@ -186,6 +134,7 @@ body:has(.catalogo) .login-container {
     width: 100%;
     height: 320px;
     object-fit: cover;
+    display: block;
 }
 
 .card h3 {
@@ -198,4 +147,19 @@ body:has(.catalogo) .login-container {
     flex: 1;
     border-radius: 6px;
     font-weight: bold;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 25px;
+        max-width: 95%;
+    }
+    .catalogo {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .card img {
+        height: 240px;
+    }
 }
