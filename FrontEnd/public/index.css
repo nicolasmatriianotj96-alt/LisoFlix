@@ -1,242 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: black;
-    overflow-x: hidden;
-    color: white;
-}
-
-.background {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    padding-top: 20px;
-    padding-bottom: 40px;
-    background-image: url('./imagens/planoDeFundo.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.65);
-}
-
-.login-container {
-    position: relative;
-    z-index: 2;
-    margin: auto;
-    width: 90%;
-    max-width: 400px; /* VOLTOU AO NORMAL pra login/registro */
-    background: rgba(0,0,0,0.75);
-    padding: 40px;
-    border-radius: 10px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* Só dashboard fica largo */
-body:has(#catalogo) .login-container {
-    max-width: 1200px;
-}
-
-.login-container button {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background: red;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-.login-container input {
-    width: 100%;
-    height: 45px; /* era 35px + padding 20px = 75px, gigante */
-    padding: 0 15px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.1);
-    color: white;
-}
-
-.login-container h1, h3 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.registrar {
-    width: 100%;
-    height: 41px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    border-radius: 8px;
-    background: red;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.registrar:hover {
-    background: #cc0000;
-}
-
-a {
-    text-decoration: none;
-}
-
-/* DASHBOARD - GRID SEM SCROLL HORIZONTAL */
-.catalogo {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
-    gap: 25px !important;
-    margin-top: 30px !important;
-    padding: 0 20px !important;
-    width: 100% !important;
-    overflow: visible !important;
-}
-
-.card {
-    background: rgba(26, 26, 26, 0.9) !important;
-    border-radius: 10px !important;
-    overflow: hidden !important;
-    text-align: center !important;
-    transition: transform 0.2s !important;
-    width: 100% !important;
-}
-
-.card:hover {
-    transform: scale(1.05) !important;
-}
-
-.card img {
-    width: 100% !important;
-    height: 270px !important;
-    object-fit: cover !important;
-    display: block !important;
-    background: #222 !important;
-}
-
-.card h3 {
-    color: white !important;
-    font-size: 16px !important;
-    padding: 12px 8px !important;
-    margin: 0 !important;
-    height: 50px !important;
-    overflow: hidden !important;
-}
-
-.card button {
-    width: calc(100% - 20px) !important;
-    margin: 0 10px 12px 10px !important;
-    padding: 10px !important;
-}
-
-/* RESPONSIVO - CELULAR */
-@media (max-width: 768px) {
-    .catalogo {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
-        gap: 15px !important;
-        padding: 0 15px !important;
-    }
-    .card img {
-        height: 210px !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .catalogo {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 12px !important;
-    }
-    .card img {
-        height: 200px !important;
-    }
-    .login-container {
-        padding: 25px !important;
-        max-width: 95% !important;
-    }
-    .login-container h1 {
-        font-size: 28px !important;
-    }
-}
-
-html, body {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* MOBILE RESPONSIVO */
-@media (max-width: 768px) {
-   .perfil-container, .login-container {
-        padding: 20px;
-        margin: 20px;
-    }
-    
-    .foto-perfil {
-        width: 80px;
-        height: 80px;
-        font-size: 35px;
-    }
-    
-    h1 {
-        font-size: 24px;
-    }
-    
-    .card {
-        width: 100%;
-        max-width: 300px;
-        margin: 10px auto;
-    }
-    
-    #catalogo {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    #catalogo {
-        grid-template-columns: 1fr;
-    }
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #0f0f0f; /* cor de fundo que tu usa */
-}
-
-.container-login, .container-registro {
-  width: 100%;
-  max-width: 400px;
-  padding: 40px;
-  box-sizing: border-box;
-}
-
 html, body {
   height: 100%;
   margin: 0;
@@ -245,17 +6,52 @@ html, body {
 
 body {
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background: #0f0f0f;
 }
 
-.container-login, .container-registro {
+.background {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex; /* <- o flex tem que estar aqui */
+  justify-content: center;
+  align-items: center;
+  background-image: url('./imagens/planoDeFundo.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.65);
+}
+
+.login-container {
+  position: relative;
+  z-index: 2;
   width: 100%;
   max-width: 380px;
+  background: rgba(0,0,0,0.75);
   padding: 40px 30px;
-  background: #1a1a1a;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-sizing: border-box;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  box-sizing: border-box;
 }
