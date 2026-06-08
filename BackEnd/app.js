@@ -78,11 +78,11 @@ app.post("/cadastro", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-    const { usuario, senha } = req.body;
-    if (!usuario ||!senha) return res.status(400).json({ mensagem: "Preencha todos os campos" });
+    const { email, senha } = req.body;
+    if (!email || !senha) return res.status(400).json({ mensagem: "Preencha todos os campos" });
 
     try {
-        const result = await pool.query("SELECT * FROM usuarios WHERE email = $1", [usuario]);
+        const result = await pool.query("SELECT * FROM usuarios WHERE email = $1", [email]);
         if (result.rows.length === 0) return res.status(400).json({ mensagem: "Usuário ou senha incorretos" });
 
         const user = result.rows[0];
@@ -95,7 +95,6 @@ app.post("/login", async (req, res) => {
         res.status(500).json({ mensagem: "Erro no servidor" });
     }
 });
-
 // ROTAS PERFIL
 app.get("/usuario", auth, async (req, res) => {
     try {

@@ -1,29 +1,45 @@
 const API_URL = 'https://lisoflix-g5ie.onrender.com';
 
 async function login() {
-    // FORÇA valores fixos pra testar
-    const login = 'teste@teste.com';
-    const senha = '123456';
+    const login = document.getElementById('usuario').value.trim();
+    const senha = document.getElementById('senha').value;
     const msg = document.getElementById('mensagem');
 
-    const payload = { email: login, senha };
-    console.log('PAYLOAD ENVIADO:', JSON.stringify(payload));
+    if (!login || !senha) {
+        msg.textContent = "Preencha email/usuário e senha";
+        msg.style.color = "red";
+        return;
+    }
 
-    msg.textContent = "Testando...";
-    
+    msg.textContent = "Entrando...";
+    msg.style.color = "white";
+
     try {
         const res = await fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({ email: login, senha })
         });
 
         console.log('Status:', res.status);
         const data = await res.json();
         console.log('Resposta:', data);
 
-        msg.textContent = data.mensagem;
+        if (res.ok) {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("nome", data.nome);
+            msg.textContent = "Login ok! Redirecionando...";
+            msg.style.color = "#46d369";
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1000);
+        } else {
+            msg.textContent = data.mensagem || "Erro ao logar";
+            msg.style.color = "red";
+        }
     } catch (err) {
+        msg.textContent = "Erro de conexão com servidor";
+        msg.style.color = "red";
         console.error(err);
     }
 }
