@@ -1,57 +1,34 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LisoFlix - Dashboard</title>
-    <link rel="stylesheet" href="index.css">
-</head>
 <body>
     <div class="background">
         <div class="overlay"></div>
-
         <div class="login-container">
-            <h1>Bem-vindo ao LisoFlix!</h1>
-            <button onclick="window.location.href='perfil.html'">Perfil</button>
-            <h3 id="boasvindas">Carregando...</h3>
-
-<div style="margin:20px 0;">
-    <button onclick="mostrarAba('catalogo')" id="btnCatalogo" style="padding:10px 20px; background:#e50914; border:none; color:white; cursor:pointer; border-radius:5px 0 0 5px;">Catálogo</button>
-    <button onclick="mostrarAba('favoritos')" id="btnFavoritos" style="padding:10px 20px; background:#333; border:none; color:white; cursor:pointer; border-radius:0 5px 5px 0;">♥ Meus Favoritos<span id="countFav">0</span></button>
-</div>
-
-<input type="text" id="busca" placeholder="Buscar filmes..." onkeyup="filtrarFilmes()" 
-       style="width:100%; max-width:400px; padding:12px; margin:20px 0; border-radius:8px; border:1px solid #333; background:#1a1a1a; color:white; font-size:16px;">
-
-<div class="catalogo" id="catalogo"></div>
-<div class="catalogo" id="favoritos" style="display:none;"></div>
-
-            <button class="registrar" onclick="logout()" style="background:#333;margin-top:20px;">Sair</button>
+            <h1 id="boasvindas">Carregando...</h1>
             <p id="mensagem"></p>
+
+            <!-- HEADER NOVO COM SAIR -->
+            <div style="display:flex; gap:10px; margin-bottom:20px;">
+                <button id="btnCatalogo" class="registrar" onclick="mostrarAba('catalogo')" style="flex:2;">Catálogo</button>
+                <button id="btnFavoritos" class="registrar" onclick="mostrarAba('favoritos')" style="flex:2;">♥ Meus Favoritos <span id="countFav">0</span></button>
+                <button class="registrar" onclick="logout()" style="flex:1; background:#333;">Sair</button>
+            </div>
+
+            <!-- BUSCA -->
+            <input type="text" id="busca" placeholder="Buscar filmes..." onkeyup="filtrarFilmes()" 
+                   style="width:100%; padding:12px; margin-bottom:20px; border-radius:8px; border:1px solid #333; background:#1a1a1a; color:white; font-size:16px;">
+
+            <!-- IMPORTANTE: adiciona os ids aqui -->
+            <div id="catalogo" class="catalogo" style="display:grid;"></div>
+            <div id="favoritos" class="catalogo" style="display:none;"></div>
         </div>
     </div>
 
-    <div id="modal" onclick="if(event.target.id==='modal') fecharTrailer()" ...
+    <!-- MODAL TRAILER -->
+    <div id="modalTrailer" onclick="fecharTrailer(event)" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999; justify-content:center; align-items:center;">
+        <div style="position:relative; width:90%; max-width:800px;">
+            <button onclick="fecharTrailer(event)" style="position:absolute; top:-40px; right:0; background:red; color:white; border:none; padding:10px 15px; border-radius:50%; font-size:20px; cursor:pointer;">X</button>
+            <iframe id="playerTrailer" width="100%" height="450" frameborder="0" allow="autoplay"></iframe>
+        </div>
+    </div>
 
-<!-- Modal do Trailer -->
-<div id="modalTrailer" onclick="fecharTrailer(event)" 
-     style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
-            background:rgba(0,0,0,0.9); z-index:9999;">
-
-    <button onclick="fecharTrailer(event)" 
-            style="position:absolute; top:20px; right:30px; font-size:40px; 
-                   color:white; background:none; border:none; cursor:pointer; z-index:10000;">×</button>
-    
-    <iframe id="playerTrailer" 
-            style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); 
-                   width:90%; height:80%; max-width:1280px; max-height:720px; 
-                   border:none;" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen></iframe>
-</div>
-
-<script src="dashboard.js"></script>
+    <script src="dashboard.js"></script>
 </body>
-</html>
-
-// nada nada
