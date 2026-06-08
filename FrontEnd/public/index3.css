@@ -231,3 +231,20 @@ a{
     }
 
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0f0f0f; /* cor de fundo que tu usa */
+}
+
+.container-login, .container-registro {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  box-sizing: border-box;
+}
