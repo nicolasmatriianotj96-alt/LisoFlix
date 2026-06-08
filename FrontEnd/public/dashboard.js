@@ -126,3 +126,49 @@ async function toggleFavorito(filme_id, btn) {
         console.error(err);
     }
 }
+
+async function mostrarAba(aba) {
+    document.getElementById('catalogo').style.display = aba === 'catalogo' ? 'grid' : 'none';
+    document.getElementById('favoritos').style.display = aba === 'favoritos' ? 'grid' : 'none';
+    
+    document.getElementById('btnCatalogo').style.background = aba === 'catalogo' ? '#e50914' : '#333';
+    document.getElementById('btnFavoritos').style.background = aba === 'favoritos' ? '#e50914' : '#333';
+
+    if (aba === 'favoritos') {
+        carregarFavoritos();
+    }
+}
+
+async function carregarFavoritos() {
+    const token = localStorage.getItem('token');
+    const container = document.getElementById('favoritos');
+    
+    try {
+        const res = await fetch(`${API_URL}/favoritos`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const filmes = await res.json();
+        
+        if (filmes.length === 0) {
+            container.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Você ainda não favoritou nenhum filme</p>';
+            return;
+        }
+        
+        container.innerHTML = filmes.map(filme => {
+            const img = filme.imagem_url;
+            const trailer = filme.url_trailer;
+            return `
+                <div class="card">
+                    <img src="${img}" alt="${filme.titulo}">
+                    <h3>${filme.titulo}</h3>
+                    <div style="display:flex; gap:10px; padding:10px;">
+                        <button class="registrar" onclick="abrirTrailer('${trailer || ''}')" ${!trailer? 'disabled style="opacity:0.5"' : ''}>Assistir</button>
+                        <button class="registrar" onclick="toggleFavorito(${filme.id}, this)" style="background:#46d369;" data-fav="true">✓</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } catch (err) {
+        console.error(err);
+    }
+}

@@ -169,6 +169,21 @@ app.post("/favoritar", auth, async (req, res) => {
     }
 });
 
+// GET meus favoritos
+app.get("/favoritos", auth, async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT f.* FROM filmes f
+            INNER JOIN favoritos fav ON f.id = fav.filme_id
+            WHERE fav.usuario_id = $1
+            ORDER BY fav.criado_em DESC
+        `, [req.user.id]);
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ mensagem: "Erro ao buscar favoritos" });
+    }
+});
+
 // DELETE desfavoritar
 app.delete("/favoritar/:filme_id", auth, async (req, res) => {
     try {
