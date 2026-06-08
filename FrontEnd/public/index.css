@@ -161,3 +161,41 @@ body:has(.catalogo) .login-container {
     padding: 10px;
     font-size: 16px;
 }
+
+.catalogo {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.card {
+    background: #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(229,9,20,0.4);
+}
+
+.card img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+}
+
+.card h3 {
+    padding: 12px;
+    font-size: 16px;
+    margin: 0;
+}
+
+.card button {
+    flex: 1;
+    border-radius: 6px;
+    font-weight: bold;
+}

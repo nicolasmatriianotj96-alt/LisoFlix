@@ -57,21 +57,21 @@ window.onload = async function() {
         catalogo.innerHTML = '';
 
         filmes.forEach(filme => {
-    const img = filme.url_imagem || filme.imagem_url;
-    const trailer = filme.url_trailer;
-    const isLocal = filme.id === 9991 || filme.id === 9992;
+            const img = filme.url_imagem || filme.imagem_url;
+            const trailer = filme.url_trailer;
+            const isLocal = filme.id === 9991 || filme.id === 9992;
 
-    catalogo.innerHTML += `
-        <div class="card">
-            <img src="${img}" alt="${filme.titulo}">
-            <h3>${filme.titulo}</h3>
-            <div style="display:flex; gap:10px; padding:10px;">
-                <button class="registrar" onclick="abrirTrailer('${trailer || ''}')" ${!trailer? 'disabled style="opacity:0.5"' : ''}>Assistir</button>
-                ${!isLocal? `<button class="registrar" onclick="toggleFavorito(${filme.id}, this)" style="background:#e50914;">♥</button>` : ''}
-            </div>
-        </div>
-    `;
-});
+            catalogo.innerHTML += `
+                <div class="card">
+                    <img src="${img}" alt="${filme.titulo}">
+                    <h3>${filme.titulo}</h3>
+                    <div style="display:flex; gap:10px; padding:10px;">
+                        <button class="registrar" onclick="abrirTrailer('${trailer || ''}')" ${!trailer? 'disabled style="opacity:0.5"' : ''}>Assistir</button>
+                        ${!isLocal? `<button class="registrar" onclick="toggleFavorito(${filme.id}, this)" style="background:#e50914;">♥</button>` : ''}
+                    </div>
+                </div>
+            `;
+        });
         msg.textContent = "";
 
     } catch (err) {
@@ -117,6 +117,11 @@ async function toggleFavorito(filme_id, btn) {
             body: favoritado? null : JSON.stringify({ filme_id })
         });
 
+        // Se tá na aba favoritos e desmarcou, remove o card da tela
+        if (favoritado && document.getElementById('favoritos').style.display === 'grid') {
+            btn.closest('.card').remove();
+        }
+
         const data = await res.json();
         btn.dataset.fav =!favoritado;
         btn.style.background = favoritado? '#e50914' : '#46d369';
@@ -128,11 +133,11 @@ async function toggleFavorito(filme_id, btn) {
 }
 
 async function mostrarAba(aba) {
-    document.getElementById('catalogo').style.display = aba === 'catalogo' ? 'grid' : 'none';
-    document.getElementById('favoritos').style.display = aba === 'favoritos' ? 'grid' : 'none';
-    
-    document.getElementById('btnCatalogo').style.background = aba === 'catalogo' ? '#e50914' : '#333';
-    document.getElementById('btnFavoritos').style.background = aba === 'favoritos' ? '#e50914' : '#333';
+    document.getElementById('catalogo').style.display = aba === 'catalogo'? 'grid' : 'none';
+    document.getElementById('favoritos').style.display = aba === 'favoritos'? 'grid' : 'none';
+
+    document.getElementById('btnCatalogo').style.background = aba === 'catalogo'? '#e50914' : '#333';
+    document.getElementById('btnFavoritos').style.background = aba === 'favoritos'? '#e50914' : '#333';
 
     if (aba === 'favoritos') {
         carregarFavoritos();
@@ -142,18 +147,19 @@ async function mostrarAba(aba) {
 async function carregarFavoritos() {
     const token = localStorage.getItem('token');
     const container = document.getElementById('favoritos');
-    
+
     try {
         const res = await fetch(`${API_URL}/favoritos`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const filmes = await res.json();
-        
+
         if (filmes.length === 0) {
             container.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Você ainda não favoritou nenhum filme</p>';
+            document.getElementById('countFav').textContent = '0';
             return;
         }
-        
+
         container.innerHTML = filmes.map(filme => {
             const img = filme.imagem_url;
             const trailer = filme.url_trailer;
@@ -168,7 +174,10 @@ async function carregarFavoritos() {
                 </div>
             `;
         }).join('');
+
+        document.getElementById('countFav').textContent = filmes.length;
     } catch (err) {
         console.error(err);
+        container.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:red;">Erro ao carregar favoritos</p>';
     }
 }
